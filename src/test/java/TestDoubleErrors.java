@@ -20,9 +20,9 @@ public class TestDoubleErrors {
 
     @Test
     public void test() throws Exception {
-        for (int length = 7; length < 200; length++) {
+        for (int length = 7; length < 500; length++) {
 
-            for (int i = 0; i < 10; i++) {
+            for (int i = 0; i < 100; i++) {
                 boolean[] message = generateMessage(length);
                 List<Integer> sum = count(message);
 

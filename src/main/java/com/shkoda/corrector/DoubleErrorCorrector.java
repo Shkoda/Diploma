@@ -20,9 +20,11 @@ public class DoubleErrorCorrector {
         int bigIndex = -1, smallIndex = -1;
         int bitNumber = MathUtils.bitNumber(message.length);
 
+        int delta0 = delta.get(0);
+
         for (int i = delta.size() - 1; i >= 1; i--) {
             int currentDelta = delta.get(i);
-            if (currentDelta != correctSums.get(i)) {
+            if (currentDelta != 0 && currentDelta != delta0) {
                 bigIndex = currentDelta ;
 
                 smallIndex = bigIndex ^ delta.get(0);
