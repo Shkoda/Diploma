@@ -24,7 +24,7 @@ public class MessageGenerator {
         boolean[] modified = new boolean[message.length];
         System.arraycopy(message, 0, modified, 0, message.length);
         for (int position : positions) {
-            modified[position] = !message[position];
+            modified[position - 1] = !message[position - 1];
         }
         return modified;
     }

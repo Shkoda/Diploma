@@ -26,7 +26,7 @@ public class CheckSum {
         List<Integer> indexes = new ArrayList<>();
         for (int i = 0; i < message.length; i++) {
             if (message[i])
-                indexes.add(i);
+                indexes.add(i+1);
 
         }
 
@@ -38,8 +38,8 @@ public class CheckSum {
     private static List<Integer> filterOneBitIndexesWithOneOnPosition(boolean[] message, int oneBitPositionNumber) {
         List<Integer> indexes = new ArrayList<>();
         for (int i = 0; i < message.length; i++) {
-            if (message[i] && hasOneBitOnPosition(i, oneBitPositionNumber))
-                indexes.add(i);
+            if (message[i] && hasOneBitOnPosition(i+1, oneBitPositionNumber))
+                indexes.add(i+1);
 
         }
 
