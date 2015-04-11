@@ -1,6 +1,7 @@
 package com.shkoda.utils;
 
 import com.shkoda.corrector.DoubleErrorCorrector;
+import com.shkoda.corrector.TripleErrorCorrector;
 
 import java.util.Arrays;
 import java.util.List;
@@ -19,7 +20,7 @@ public class Formatter {
         return sb.toString();
     }
 
-    public static void logError(boolean[] message, boolean[] badMessage, boolean[] fixed, List<Integer> sum, List<Integer> badSum, int first, int second) {
+    public static void logError(boolean[] message, boolean[] badMessage, boolean[] fixed, List<Integer> sum, List<Integer> badSum, int ... errorIndexes) {
         StringBuilder sb = new StringBuilder();
         sb.append("Original :: ").append(Formatter.toString(message)).append("\n");
         sb.append("Damaged  :: ").append(Formatter.toString(badMessage)).append("\n");
@@ -30,8 +31,8 @@ public class Formatter {
         sb.append("Bad sums     :: ").append(badSum).append("\n");
         sb.append("Delta sums   :: ").append(MathUtils.xor(sum, badSum)).append("\n\n");
 
-        sb.append("Real bad positions  :: [").append(first).append(", ").append(second).append("]\n");
-        sb.append("Found bad positions :: ").append(Arrays.toString(DoubleErrorCorrector.errorPositions(badMessage, sum))).append("\n");
+        sb.append("Real bad positions  :: ").append(Arrays.toString(errorIndexes)).append("\n");
+        sb.append("Found bad positions :: ").append(Arrays.toString(TripleErrorCorrector.errorPositions(badMessage, sum))).append("\n");
 
 
         System.err.print(sb.toString());

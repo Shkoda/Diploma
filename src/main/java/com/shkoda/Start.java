@@ -1,6 +1,7 @@
 package com.shkoda;
 
 import com.shkoda.corrector.DoubleErrorCorrector;
+import com.shkoda.corrector.TripleErrorCorrector;
 import com.shkoda.generator.MessageGenerator;
 import com.shkoda.sum.CheckSum;
 import com.shkoda.utils.Formatter;
@@ -17,23 +18,23 @@ import static com.shkoda.utils.Formatter.logError;
 public class Start {
     public static void main(String[] args) {
         //{0,1,1,0,1,1,0}
-        boolean[] message = MessageGenerator.generateMessage(new int[]{0, 0, 1, 1, 0, 0, 0});
+        boolean[] message = MessageGenerator.generateMessage(new int[]{ 1, 0, 0, 1, 1, 0, 0});
         List<Integer> sum = CheckSum.count(message);
 
-        int first = 6, second = 7;
+        int[] errors = new int[]{3, 2, 4};
 
-        boolean[] badMessage = MessageGenerator.invertBits(message, first, second);
+        boolean[] badMessage = MessageGenerator.invertBits(message, errors);
 
         List<Integer> badSum = CheckSum.count(badMessage);
 
         boolean[] fixed = null;
         try {
 
-            fixed = DoubleErrorCorrector.fix(badMessage, sum);
+            fixed = TripleErrorCorrector.fix(badMessage, sum);
         }catch (Exception e){
 
         }finally {
-            logError(message, badMessage, fixed, sum, badSum, first, second);
+            logError(message, badMessage, fixed, sum, badSum, errors);
         }
 
 

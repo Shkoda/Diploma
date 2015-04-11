@@ -1,9 +1,16 @@
 package com.shkoda.generator;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * Created by Nightingale on 10.04.2015.
  */
 public class MessageGenerator {
+
+
     public static boolean[] generateMessage(int[] prototype) {
         boolean[] message = new boolean[prototype.length];
         for (int i = 0; i < prototype.length; i++) {
@@ -12,6 +19,21 @@ public class MessageGenerator {
         return message;
 
     }
+
+
+    public static int[] generateSortedDifferentNumbers(int bound, int amount) {
+        List<Integer> list = new ArrayList<>();
+        for (int i = 0; i < bound; i++)
+            list.add(i);
+        Collections.shuffle(list);
+        int[] numbers = new int[amount];
+        for (int i = 0; i < amount; i++)
+            numbers[i] = list.get(i);
+        Arrays.sort(numbers);
+        return numbers;
+
+    }
+
 
     public static boolean[] generateMessage(int length) {
         boolean[] message = new boolean[length];
