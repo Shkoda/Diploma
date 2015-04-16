@@ -1,5 +1,7 @@
 package com.shkoda.corrector;
 
+import java.util.List;
+
 /**
  * Created by Nightingale on 16.04.2015.
  */
@@ -70,6 +72,15 @@ public class TripleDiploma {
 
     private static int bitOnPosition(int number, int position) {
         return (number & (1 << (position - 1))) >> (position - 1);
+    }
+
+    public static int[] solve(List<Integer> deltaList) {
+        int[] delta = new int[deltaList.size()];
+        for (int i = 0; i < deltaList.size(); i++) {
+            delta[i] = deltaList.get(i);
+        }
+        Result result = solve(delta);
+        return new int[]{result.g, result.p, result.g};
     }
 
     public static class Result {

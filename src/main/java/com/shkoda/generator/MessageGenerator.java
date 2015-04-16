@@ -24,7 +24,7 @@ public class MessageGenerator {
     public static int[] generateSortedDifferentNumbers(int bound, int amount) {
         List<Integer> list = new ArrayList<>();
         for (int i = 0; i < bound; i++)
-            list.add(i+1);
+            list.add(i + 1);
         Collections.shuffle(list);
         int[] numbers = new int[amount];
         for (int i = 0; i < amount; i++)
@@ -34,6 +34,45 @@ public class MessageGenerator {
 
     }
 
+    public static boolean[] generateZeroMessage(int length) {
+        return generateValueeMessage(length, false);
+    }
+
+    public static boolean[] generateOneMessage(int length) {
+        return generateValueeMessage(length, true);
+    }
+
+    public static boolean hasNext(boolean[] array){
+        for (boolean b : array) {
+            if (!b)
+                return true;
+        }
+        return false;
+    }
+
+    public static boolean[] next(boolean[] previous) {
+        boolean[] next = new boolean[previous.length];
+        System.arraycopy(previous, 0, next, 0, previous.length);
+
+        int pointer = previous.length - 1;
+
+        boolean overhead;
+        do {
+            overhead = next[pointer];
+            next[pointer] = !next[pointer];
+            pointer--;
+        } while (overhead && pointer >= 0);
+
+        return next;
+    }
+
+
+    private static boolean[] generateValueeMessage(int length, boolean value) {
+        boolean[] message = new boolean[length];
+        for (int i = 0; i < length; i++)
+            message[i] = value;
+        return message;
+    }
 
     public static boolean[] generateMessage(int length) {
         boolean[] message = new boolean[length];
