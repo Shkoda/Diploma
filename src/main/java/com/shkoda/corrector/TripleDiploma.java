@@ -12,70 +12,64 @@ public class TripleDiploma {
     }
 
     public static Result solve(int[] delta) {
-
-        //-----------
-        int j = delta.length - 1;   //1
-        int p, g, q, l;
-
+        int low, middle, high, tmp;
+        //1
+        int j = delta.length - 1;
         //2
-        while (delta[j] == delta[0] || delta[j] == 0) {
-            j--;
-        }
-
+        while (delta[j] == delta[0] || delta[j] == 0) j--;
         //3
         if (delta[j] != 1) {
             //4
-            g = delta[j] ^ delta[0];
-            l = j;
+            low = delta[j] ^ delta[0];
+            tmp = j;
             //5
             do {
                 j--;
             }
             while (delta[j] == delta[0] || delta[j] == delta[1] || delta[j] == 0);
-
             //6
-            if (delta[j] != delta[0] && delta[j] != delta[l] && delta[j] != 0) {
-                if ((g & (1 << (j - 1))) >> (j - 1) == 1) {
-                    q = delta[0] ^ delta[l] ^ delta[j];
-                    p = delta[0] ^ delta[j];
-                    return new Result(g, p, q);
+            if (delta[j] != delta[0] && delta[j] != delta[tmp] && delta[j] != 0) {
+                if (bitOnPosition(low, j) == 1) {
+                    middle = delta[0] ^ delta[tmp] ^ delta[j];
+                    high = delta[0] ^ delta[j];
+                    return new Result(low, high, middle);
                 } else {
                     //7
-                    q = delta[j];
-                    p = delta[l] ^ delta[j];
-                    return new Result(g, p, q);
+                    middle = delta[j];
+                    high = delta[tmp] ^ delta[j];
+                    return new Result(low, high, middle);
                 }
             }
-
         }
         //8
-        q = delta[j];
-        l = j;
+        middle = delta[j];
+        tmp = j;
         //9
         do {
             j--;
         }
         while (delta[j] == delta[0] ||
-                delta[j] == delta[l] ||
-                delta[j] == (delta[0] ^ delta[l]) ||
+                delta[j] == delta[tmp] ||
+                delta[j] == (delta[0] ^ delta[tmp]) ||
                 delta[j] == 0);
-
         //10
-        if (delta[j] != delta[0] ||
-                delta[j] != delta[l] ||
-                delta[j] != (delta[0] ^ delta[l]) ||
+        if (delta[j] != delta[0] &&
+                delta[j] != delta[tmp] &&
+                delta[j] != (delta[0] ^ delta[tmp]) &&
                 delta[j] != 0) {
-            if (((q & (1 << (j - 1))) >> (j - 1)) == 1) {
-                p = delta[j] ^ delta[l];
-                g = delta[0] ^ delta[j];
-                return new Result(g, p, q);
+            if (bitOnPosition(middle, j) == 1) {
+                high = delta[j] ^ delta[tmp];
+                low = delta[0] ^ delta[j];
+                return new Result(low, high, middle);
             }
-
         }
+        high = delta[j];
+        low = delta[0] ^ delta[tmp] ^ delta[j];
+        return new Result(low, high, middle);
+    }
 
-        p = delta[j];
-        g = delta[0] ^ delta[l] ^ delta[j];
-        return new Result(g, p, q);
+    private static int bitOnPosition(int number, int position) {
+        return (number & (1 << (position - 1))) >> (position - 1);
     }
 
     public static class Result {
