@@ -37,6 +37,14 @@ public class MathUtils {
     }
 
 
+    public static boolean equalsSorted(int[] first, int[] second){
+        for (int i = 0; i < first.length; i++) {
+            if (first[i]!=second[i])
+                return false;
+        }
+        return true;
+    }
+
 
     public static void main(String[] args) {
         System.out.println(hasOneBitOnPosition(5, 4));

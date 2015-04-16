@@ -1,4 +1,5 @@
 import com.shkoda.corrector.DoubleErrorCorrector;
+import com.shkoda.corrector.TripleErrorCorrector;
 import com.shkoda.generator.MessageGenerator;
 import org.junit.Test;
 
@@ -33,7 +34,7 @@ public class TestTripleErrors {
                 boolean[] fixed = null;
                 try {
 
-                    fixed = DoubleErrorCorrector.fix(badMessage, sum);
+                    fixed = TripleErrorCorrector.fix(badMessage, sum);
 
                 } catch (Exception e) {
                     logError(message, badMessage, fixed, sum, badSum, errors);

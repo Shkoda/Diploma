@@ -24,7 +24,7 @@ public class MessageGenerator {
     public static int[] generateSortedDifferentNumbers(int bound, int amount) {
         List<Integer> list = new ArrayList<>();
         for (int i = 0; i < bound; i++)
-            list.add(i);
+            list.add(i+1);
         Collections.shuffle(list);
         int[] numbers = new int[amount];
         for (int i = 0; i < amount; i++)

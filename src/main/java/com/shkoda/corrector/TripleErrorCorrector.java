@@ -3,6 +3,7 @@ package com.shkoda.corrector;
 import com.shkoda.generator.MessageGenerator;
 import com.shkoda.utils.MathUtils;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static com.shkoda.sum.CheckSum.count;
@@ -30,7 +31,7 @@ public class TripleErrorCorrector {
                 for (int j = i - 1; j >= 1; j--) {
                     int midDelta = delta.get(j) ^ bigIndex;
                     if (midDelta != 0 && midDelta != delta0) {
-                        mediumIndex = midDelta;
+                        mediumIndex = midDelta^ delta0;
                         smallIndex = delta0 ^ bigIndex ^ mediumIndex;
                         break;
 
@@ -42,7 +43,9 @@ public class TripleErrorCorrector {
             }
 
         }
-        return new int[]{smallIndex, mediumIndex, bigIndex};
+        int[] positions = {smallIndex, mediumIndex, bigIndex};
+        Arrays.sort(positions);
+        return positions;
 
     }
 
