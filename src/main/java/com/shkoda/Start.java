@@ -1,13 +1,10 @@
 package com.shkoda;
 
-import com.shkoda.corrector.DoubleErrorCorrector;
 import com.shkoda.corrector.TripleErrorCorrector;
 import com.shkoda.generator.MessageGenerator;
 import com.shkoda.sum.CheckSum;
-import com.shkoda.utils.Formatter;
 import com.shkoda.utils.MathUtils;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static com.shkoda.utils.Formatter.logError;
@@ -18,8 +15,8 @@ import static com.shkoda.utils.Formatter.logError;
 public class Start {
     public static void main(String[] args) {
         //{0,1,1,0,1,1,0}
-        boolean[] message = MessageGenerator.generateMessage(new int[]{ 1, 0, 0, 1, 1, 0, 0});
-        List<Integer> sum = CheckSum.count(message);
+        boolean[] message = MessageGenerator.generateMessage(new int[]{1, 0, 0, 1, 1, 0, 0});
+        List<Integer> correctSum = CheckSum.count(message);
 
         int[] errors = new int[]{2, 3, 4};
 
@@ -27,17 +24,17 @@ public class Start {
 
         List<Integer> badSum = CheckSum.count(badMessage);
 
+        List<Integer> delta = MathUtils.xor(correctSum, badSum);
         boolean[] fixed = null;
         try {
+            int[] errorIndexes = TripleErrorCorrector.solve(delta);
+            fixed = MessageGenerator.invertBits(badMessage, errorIndexes);
 
-            fixed = TripleErrorCorrector.fix(badMessage, sum);
-        }catch (Exception e){
+        } catch (Exception e) {
 
-        }finally {
-            logError(message, badMessage, fixed, sum, badSum, errors);
+        } finally {
+            logError(message, badMessage, fixed, badSum, correctSum, delta, errors);
         }
-
-
 
 
         //time to start diploma =)

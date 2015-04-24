@@ -1,8 +1,7 @@
-import com.shkoda.corrector.TripleDiploma;
 import com.shkoda.corrector.TripleErrorCorrector;
 import com.shkoda.generator.MessageGenerator;
+import com.shkoda.utils.Formatter;
 import com.shkoda.utils.MathUtils;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -10,7 +9,7 @@ import java.util.List;
 
 import static com.shkoda.generator.MessageGenerator.*;
 import static com.shkoda.sum.CheckSum.count;
-import static com.shkoda.utils.Formatter.logError;
+import static com.shkoda.utils.Formatter.*;
 
 /**
  * Created by Nightingale on 16.04.2015.
@@ -30,18 +29,19 @@ public class TripleOlgaTest {
 
                 boolean[] fixed = null;
                 int[] positions = null;
+                List<Integer> delta = MathUtils.xor(sum, badSum);
                 try {
-                    positions = TripleDiploma.solve(MathUtils.xor(sum, badSum));
+                    positions = TripleErrorCorrector.solve(delta);
                     fixed = MessageGenerator.invertBits(badMessage, positions);
                 } catch (Exception e) {
-                    logError(message, badMessage, fixed, sum, badSum, errors);
+                  logError(message, badMessage, fixed, badSum, sum, delta, errors, positions);
                     System.out.println("---------------------");
                     e.printStackTrace();
                     return;
                 }
 
                 if (!Arrays.equals(positions, errors)) {
-                    logError(message, badMessage, fixed, sum, badSum, errors);
+                    logError(message, badMessage, fixed, badSum, sum, delta, errors, positions);
                     return;
                 }
 

@@ -1,6 +1,6 @@
-import com.shkoda.corrector.DoubleErrorCorrector;
 import com.shkoda.corrector.TripleErrorCorrector;
 import com.shkoda.generator.MessageGenerator;
+import com.shkoda.utils.MathUtils;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -28,23 +28,27 @@ public class TestTripleErrors {
 
                 int [] errors = MessageGenerator.generateSortedDifferentNumbers(length, 3);
 
-                boolean[] badMessage = invertBits(message,errors);
+                boolean[] badMessage = invertBits(message, errors);
                 List<Integer> badSum = count(badMessage);
 
+                List<Integer> delta = MathUtils.xor(sum, badSum);
+
                 boolean[] fixed = null;
+                int[] errorIndexes = null;
                 try {
+                    errorIndexes = TripleErrorCorrector.solve(delta);
 
-                    fixed = TripleErrorCorrector.fix(badMessage, sum);
 
+                    fixed = MessageGenerator.invertBits(badMessage, errorIndexes);
                 } catch (Exception e) {
-                    logError(message, badMessage, fixed, sum, badSum, errors);
+                    logError(message, badMessage, fixed, badSum, sum, delta, errors);
                     System.out.println("---------------------");
                     e.printStackTrace();
                     return;
                 }
 
                 if (!Arrays.equals(fixed, message)) {
-                    logError(message, badMessage, fixed, sum, badSum, errors);
+                    logError(message, badMessage, fixed, sum, badSum,delta, errors, errorIndexes);
                     return;
                 }
 
