@@ -5,7 +5,6 @@ import com.shkoda.utils.Formatter;
 import java.util.Arrays;
 import java.util.List;
 
-import static java.lang.Integer.*;
 import static java.lang.String.format;
 
 /**
@@ -15,24 +14,25 @@ public class TripleErrorCorrector {
 
     public static void main(String[] args) {
 /*
-Original :: 0, 0, 1, 0, 0, 1, 1,
-Damaged  :: 0, 1, 1, 1, 1, 1, 1,
+Original :: 0, 1, 0, 1, 0, 0, 1, 1,
+Damaged  :: 0, 1, 1, 0, 1, 0, 1, 1,
 Fixed    :: null
 
-Control sums :: [2, 4, 2, 1]
-Bad sums     :: [1, 1, 0, 0]
-Delta sums   :: [3, 5, 2, 1]
+Control sums :: [9, 7, 5, 3, 8]
+Bad sums     :: [11, 1, 6, 2, 8]
+Delta sums   :: [2, 6, 3, 1, 0]
 
-Real bad positions  :: [2, 4, 5]
-Found bad positions :: [2, 0, 1]
+Real bad positions  :: [3, 4, 5]
+Found bad positions :: [3, 1, 0]
  */
-        int[] delta = new int[]{3, 5, 2, 1};
-        Result result = solve(delta);
+        int[] delta = new int[]{2, 6, 3, 1, 0};
+//        int[] delta = new int[]{15,9,14,14,15};
+        TripleResult result = solve(delta);
         System.out.println(result.log);
         System.out.println(result);
     }
 
-    public static Result solve(int[] delta) {
+    public static TripleResult solve(int[] delta) {
         StringBuilder sb = new StringBuilder();
 
         int low = -1, middle = -1, high = -1, tmp = -1;
@@ -94,7 +94,7 @@ Found bad positions :: [2, 0, 1]
                     middle = delta[0] ^ delta[j];
                     sb.append(format("\tmiddle = %d, high = %d\n", middle, high));
 
-                    return new Result(low, middle, high, sb.toString());
+                    return new TripleResult(low, middle, high, sb.toString());
                 } else {
                     //7 Позиція high останнього з пошкоджених при передачі бітів дорівнює delta[j] :
                     // high = delta[j],
@@ -104,7 +104,7 @@ Found bad positions :: [2, 0, 1]
                     middle = delta[tmp] ^ delta[j];
                     sb.append(format("7. middle = %d, high = %d\n", middle, high));
 
-                    return new Result(low, middle, high, sb.toString());
+                    return new TripleResult(low, middle, high, sb.toString());
                 }
             }
         }
@@ -144,7 +144,7 @@ Found bad positions :: [2, 0, 1]
                 middle  = delta[j] ^ delta[tmp];
                 low = delta[0] ^ delta[j];
 
-                return new Result(low, middle, high, sb.toString());
+                return new TripleResult(low, middle, high, sb.toString());
             }
         }
 
@@ -155,7 +155,7 @@ Found bad positions :: [2, 0, 1]
         middle = delta[j];
         low = delta[0] ^ delta[tmp] ^ delta[j];
 
-        return new Result(low, middle, high, sb.toString());
+        return new TripleResult(low, middle, high, sb.toString());
     }
 
     private static int bitOnPosition(int number, int position) {
@@ -168,17 +168,17 @@ Found bad positions :: [2, 0, 1]
         for (int i = 0; i < deltaList.size(); i++) {
             delta[i] = deltaList.get(i);
         }
-        Result result = solve(delta);
+        TripleResult result = solve(delta);
         return result.toArray();
     }
 
-    public static class Result {
+    public static class TripleResult {
         public final int low;
         public final int middle;
         public final int high;
         public final String log;
 
-        public Result(int low, int middle, int high, String log) {
+        public TripleResult(int low, int middle, int high, String log) {
             this.low = low;
             this.middle = middle;
             this.high = high;

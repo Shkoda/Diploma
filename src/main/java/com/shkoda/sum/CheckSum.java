@@ -2,19 +2,33 @@ package com.shkoda.sum;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import static com.shkoda.utils.MathUtils.*;
 
 /**
  * Created by Nightingale on 10.04.2015.
  */
 public class CheckSum {
-    public static List<Integer> count(boolean[] message){
+    public static List<Integer> count(boolean[] message) {
         int bitNumber = bitNumber(message.length);
-        List<Integer> sums = new ArrayList<>(bitNumber+1);
+        List<Integer> sums = new ArrayList<>(bitNumber + 1);
 
         sums.add(xor(filterAllOneBitIndexes(message)));
 
-        for (int i = 0; i<bitNumber; i++){
+        for (int i = 0; i < bitNumber; i++) {
+            sums.add(xor(filterOneBitIndexesWithOneOnPosition(message, i)));
+        }
+
+        return sums;
+    }
+
+    public static List<Integer> countShifted(boolean[] message) {
+        int bitNumber = bitNumber(message.length);
+        List<Integer> sums = new ArrayList<>(bitNumber + 1);
+
+        sums.add(xor(filterAllOneBitIndexes(message)));
+
+        for (int i = 0; i < bitNumber; i++) {
             sums.add(xor(filterOneBitIndexesWithOneOnPosition(message, i)));
         }
 
@@ -26,7 +40,7 @@ public class CheckSum {
         List<Integer> indexes = new ArrayList<>();
         for (int i = 0; i < message.length; i++) {
             if (message[i])
-                indexes.add(i+1);
+                indexes.add(i + 1);
 
         }
 
@@ -34,12 +48,35 @@ public class CheckSum {
 
     }
 
+    private static int shiftRight(int value, int bitNumber) {
+        int distance = value % 4;
+
+//        int distance = 2;
+        return ((value >>> distance) | (value << (bitNumber - distance))) & (~(1<<bitNumber));
+    }
+
+    private static int shiftLeft(int value, int bitNumber) {
+        int distance = value % 4;
+//        int distance = 3;
+        return ((value << distance) | (value >>> (bitNumber - distance))) & (~(1<<bitNumber));
+    }
+
+
+    private static List<Integer> filterAllOneBitIndexesShifted(boolean[] message) {
+        List<Integer> indexes = new ArrayList<>();
+        for (int i = 0; i < message.length; i++) {
+            if (message[i])
+                indexes.add(i + 1);
+        }
+        return indexes;
+    }
+
 
     private static List<Integer> filterOneBitIndexesWithOneOnPosition(boolean[] message, int oneBitPositionNumber) {
         List<Integer> indexes = new ArrayList<>();
         for (int i = 0; i < message.length; i++) {
-            if (message[i] && hasOneBitOnPosition(i+1, oneBitPositionNumber))
-                indexes.add(i+1);
+            if (message[i] && hasOneBitOnPosition(i + 1, oneBitPositionNumber))
+                indexes.add(i + 1);
 
         }
 

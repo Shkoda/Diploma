@@ -20,7 +20,7 @@ public class TestTripleErrors {
 
     @Test
     public void test() throws Exception {
-        for (int length = 7; length < 500; length++) {
+        for (int length = 8; length < 500; length++) {
 
             for (int i = 0; i < 100; i++) {
                 boolean[] message = generateMessage(length);
