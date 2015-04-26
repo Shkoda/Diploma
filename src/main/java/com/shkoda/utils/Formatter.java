@@ -56,4 +56,12 @@ public class Formatter {
 
         System.err.print(sb.toString());
     }
+
+    public static String toBinaryString(int value, int bitNumber){
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i< bitNumber; i++)
+            sb.append(value >> (bitNumber - i - 1) & 1);
+        return sb.toString();
+    }
+
 }

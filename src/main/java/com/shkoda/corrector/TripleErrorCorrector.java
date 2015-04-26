@@ -1,10 +1,12 @@
 package com.shkoda.corrector;
 
+import com.shkoda.utils.Formatter;
+
 import java.util.Arrays;
 import java.util.List;
 
 import static java.lang.Integer.*;
-import static java.lang.String.*;
+import static java.lang.String.format;
 
 /**
  * C0reated by Nightingale on 16.04.2015.
@@ -12,8 +14,19 @@ import static java.lang.String.*;
 public class TripleErrorCorrector {
 
     public static void main(String[] args) {
-        //Real bad positions  ::
-        int[] delta = new int[]{3, 7, 3, 1};
+/*
+Original :: 0, 0, 1, 0, 0, 1, 1,
+Damaged  :: 0, 1, 1, 1, 1, 1, 1,
+Fixed    :: null
+
+Control sums :: [2, 4, 2, 1]
+Bad sums     :: [1, 1, 0, 0]
+Delta sums   :: [3, 5, 2, 1]
+
+Real bad positions  :: [2, 4, 5]
+Found bad positions :: [2, 0, 1]
+ */
+        int[] delta = new int[]{3, 5, 2, 1};
         Result result = solve(delta);
         System.out.println(result.log);
         System.out.println(result);
@@ -22,96 +35,124 @@ public class TripleErrorCorrector {
     public static Result solve(int[] delta) {
         StringBuilder sb = new StringBuilder();
 
-        int low, middle, high, tmp;
-        //1
+        int low = -1, middle = -1, high = -1, tmp = -1;
+        int bitNumber = delta.length - 1;
+        //1 Номер j поточної різниці контрольних кодів приймача та передавача встановити в n: j= n.
         int j = delta.length - 1;
 
         sb.append(format("delta = %s\n", Arrays.toString(delta)));
-        sb.append(format("1. j = %d\n", j));
-        //2
+        sb.append(format("1. j := %d\n", j));
+
+        //2 Якщо  delta[j] = delta[0] або delta[j] = 0
+        // зменшити на одиницю значення j:  j=j-1 і повернутися на п.2.
         while (delta[j] == delta[0] || delta[j] == 0) {
             j--;
             sb.append(format("2. j = %d\n", j));
         }
-        //3
-        if (bitOnPosition(delta[j], j) != 1) {
-            sb.append(format("3. bit in %s on position %d != 1\n", toBinaryString(delta[j]), j));
 
-            //4
+        //3 Якщо j-тий розряд delta[j] дорівнює одиниці,
+        // то має місце друга ситуація і виконується перехід на п.8 алгоритму.
+        if (bitOnPosition(delta[j], j) != 1) {
+            sb.append(format("3. bit in %s on position %d == 0\n",
+                    Formatter.toBinaryString(delta[j], bitNumber),
+                    j));
+
+            //4 Позиція g першого з пошкоджених при передачі блоку бітів
+            // визначається як сума: low=delta[tmp] ^ delta[0]. Фіксується значення tmp:  tmp:=j.
             low = delta[j] ^ delta[0];
             tmp = j;
 
-            sb.append(format("4. low = %s[%d] ^ %s[0] = %d, tmp = %d\n",toBinaryString(delta[j]), j, toBinaryString(delta[j]), low, tmp));
-            //5
+            sb.append(format("4. low = %s[%d] ^ %s[0]\n\tlow = %d\n\ttmp = %d\n",
+                    Arrays.toString(delta),
+                    j,
+                    Arrays.toString(delta),
+                    low,
+                    tmp));
+            //5 Виконується декремент j:  j=j-1.
+            // Якщо  delta[j] in {delta[0], delta[tmp], 0}, то перехід на повторне виконання п.5 алгоритму.
             do {
                 j--;
                 sb.append(format("5. j = %d\n", j));
             }
-//            while (delta[j] == delta[0] || delta[j] == delta[1] || delta[j] == 0);
-            while (j == 0 || j == 1 || delta[j] == 0);
+            while (delta[j] == delta[0] || delta[j] == delta[tmp] || delta[j] == 0);
+//
 
-            //6
+            //6 Якщо delta[j] != delta[0] && delta[j] != delta[tmp] && delta[j] !=  0,
             sb.append(format("6. %s[%d] = %d\n", Arrays.toString(delta), j, delta[j]));
             if (delta[j] != delta[0] && delta[j] != delta[tmp] && delta[j] != 0) {
-                sb.append(format("\tbit in %s on position %d = %d\n", toBinaryString(low), j, bitOnPosition(low, j)));
+                sb.append(format("\tbit in %s on position %d = %d\n",
+                        Formatter.toBinaryString(low, bitNumber),
+                        j,
+                        bitOnPosition(low, j)));
+                //  то аналізується  j-тий  розряд  визначеного в п.4 коду low:
+                // в разі якщо j-тий  розряд  low дорівнює нулю, то перехід на п.7.,
 
                 if (bitOnPosition(low, j) == 1) {
-                    middle = delta[0] ^ delta[tmp] ^ delta[j];
-                    high = delta[0] ^ delta[j];
+                    // інакше значення позиції high визначається як  high = delta[0] ^ delta[tmp] ^ delta[j],
+                    // а значення позиції  middle визначається як сума middle = delta[0] ^ delta[j]. Кінець.
+                    high = delta[0] ^ delta[tmp] ^ delta[j];
+                    middle = delta[0] ^ delta[j];
                     sb.append(format("\tmiddle = %d, high = %d\n", middle, high));
-
 
                     return new Result(low, middle, high, sb.toString());
                 } else {
-                    //7
-                    middle = delta[j];
-                    high = delta[tmp] ^ delta[j];
+                    //7 Позиція high останнього з пошкоджених при передачі бітів дорівнює delta[j] :
+                    // high = delta[j],
+                    // а позиція третього пошкодженого біту обчислюється як сума:
+                    // middle = delta[tmp] ^ delta[j]. Кінець.
+                    high = delta[j];
+                    middle = delta[tmp] ^ delta[j];
                     sb.append(format("7. middle = %d, high = %d\n", middle, high));
 
                     return new Result(low, middle, high, sb.toString());
                 }
             }
         }
-        //8
-        middle = delta[j];
+        //8 Позиція high  останнього зі спотворених при передачі блоку бітів визначається як сума:
+        // high  = delta[j].
+        // Фіксується значення tmp:  tmp = j.
+        high  = delta[j];
         tmp = j;
+        sb.append(format("8. high = %d, tmp = %d\n", high, tmp));
 
-        sb.append(format("8. middle = %d, tmp = %d\n", middle, tmp));
-        //9
+        //9 Виконується декремент j:  j=j-1.
+        // Якщо delta[j] in {delta[0], delta[tmp], delta[0] ^ delta[tmp], 0},
+        // то перехід на повторне виконання п.9 алгоритму.
         do {
             j--;
             sb.append(format("9. j = %d\n", j));
         }
-//        while (delta[j] == delta[0] ||
-//                delta[j] == delta[tmp] ||
-//                delta[j] == (delta[0] ^ delta[tmp]) ||
-//                delta[j] == 0);
-        while (j == 0 ||
-                j == tmp ||
+        while (delta[j] == delta[0] ||
+                delta[j] == delta[tmp] ||
                 delta[j] == (delta[0] ^ delta[tmp]) ||
                 delta[j] == 0);
-        //10
-//        if (delta[j] != delta[0] &&
-//                delta[j] != delta[tmp] &&
-//                delta[j] != (delta[0] ^ delta[tmp]) &&
-//                delta[j] != 0) {
+
+        //10  Якщо delta[j] != delta[0] && delta[j] != delta[tmp] && delta[j] != delta[0] ^ delta[tmp] && delta[j] != 0,
         if (delta[j] != delta[0] &&
                 delta[j] != delta[tmp] &&
                 delta[j] != (delta[0] ^ delta[tmp]) &&
                 delta[j] != 0) {
             sb.append(format("10. delta[%d] = %d\n", j, delta[j]));
-            sb.append(format("\tbit in %s on position %d = %d\n", toBinaryString(middle), j, bitOnPosition(middle, j)));
+            sb.append(format("\tbit in %s on position %d = %d\n", Formatter.toBinaryString(middle, bitNumber), j, bitOnPosition(middle, j)));
 
+            // то аналізується  j-тий  розряд  визначеного в п.8 коду high:
+            // якщо j-тий  розряд  high дорівнює нулю, то перехід на п.11.,
 
-            if (bitOnPosition(middle, j) == 1) {
-                high = delta[j] ^ delta[tmp];
+            if (bitOnPosition(high, j) == 1) {
+                // інакше значення позиції middle  визначається як  middle = delta[j] ^ delta[tmp],
+                // а значення позиції  low  обчислюється як сума low =d elta[0] ^ delta[j]. Кінець.
+                middle  = delta[j] ^ delta[tmp];
                 low = delta[0] ^ delta[j];
 
-                System.out.println(sb);
                 return new Result(low, middle, high, sb.toString());
             }
         }
-        high = delta[j];
+
+        //11 Позиція middle середнього  з пошкоджених при передачі бітів дорівнює
+        // delta[j] : middle = delta[j],
+        // а позиція low першого пошкодженого біту обчислюється як сума:
+        // low = delta[0] ^ delta[tmp] ^ delta[j].  Кінець.
+        middle = delta[j];
         low = delta[0] ^ delta[tmp] ^ delta[j];
 
         return new Result(low, middle, high, sb.toString());
@@ -121,34 +162,39 @@ public class TripleErrorCorrector {
         return (number >> (position - 1)) & 1;
     }
 
+
     public static int[] solve(List<Integer> deltaList) {
         int[] delta = new int[deltaList.size()];
         for (int i = 0; i < deltaList.size(); i++) {
             delta[i] = deltaList.get(i);
         }
         Result result = solve(delta);
-        return new int[]{result.g, result.p, result.q};
+        return result.toArray();
     }
 
     public static class Result {
-        public final int g;
-        public final int q;
-        public final int p;
-        public final  String log;
+        public final int low;
+        public final int middle;
+        public final int high;
+        public final String log;
 
-        public Result(int g, int q, int p, String log) {
-            this.g = g;
-            this.q = q;
-            this.p = p;
+        public Result(int low, int middle, int high, String log) {
+            this.low = low;
+            this.middle = middle;
+            this.high = high;
             this.log = log;
+        }
+
+        public int[] toArray() {
+            return new int[]{low, middle, high};
         }
 
         @Override
         public String toString() {
             return "Result{" +
-                    "g=" + g +
-                    ", q=" + q +
-                    ", p=" + p +
+                    "low=" + low +
+                    ", middle=" + middle +
+                    ", high=" + high +
                     '}';
         }
     }
