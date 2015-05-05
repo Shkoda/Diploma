@@ -64,4 +64,14 @@ public class Formatter {
         return sb.toString();
     }
 
+    public static String toBinaryString( int[] values){
+        StringBuilder sb = new StringBuilder();
+        sb.append("[");
+        int bitNumber = MathUtils.bitNumber(values[values.length - 1]);
+        for (int value : values)
+            sb.append(toBinaryString(value, bitNumber)).append(" ");
+        sb.append("]");
+        return sb.toString();
+    }
+
 }

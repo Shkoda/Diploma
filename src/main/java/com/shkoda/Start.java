@@ -16,14 +16,11 @@ public class Start {
     public static void main(String[] args) {
         //{0,1,1,0,1,1,0}
         boolean[] message = MessageGenerator.generateMessage(new int[]{
-                1, 1, 1, 1,
-                1, 1, 1, 1,
-                1, 1, 1, 1,
-                1, 1, 1,});
+                0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 0});
         List<Integer> correctSum = CheckSum.count(message);
 
 //        int[] errors = new int[]{4,6,12,14};
-        int[] errors = new int[]{8,9,10,11};
+        int[] errors = new int[]{1, 3, 5, 7};
 
         boolean[] badMessage = MessageGenerator.invertBits(message, errors);
 

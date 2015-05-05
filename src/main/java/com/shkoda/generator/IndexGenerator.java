@@ -63,6 +63,24 @@ public class IndexGenerator {
             return this;
         }
 
+        public boolean containsAnyDividable(int byValue) {
+            return countDividable(byValue) == 0;
+        }
+
+
+
+        public int countDividable(int byValue) {
+            int counter = 0;
+            for (int i : arr) {
+                if (i % byValue == 0) counter++;
+            }
+            return counter;
+        }
+
+        public int[] get() {
+            return arr;
+        }
+
         public boolean inRange(int min, int max) {
             sort();
             return !(arr[0] < min || arr[arr.length - 1] > max);

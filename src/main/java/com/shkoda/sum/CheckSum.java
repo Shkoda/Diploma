@@ -13,7 +13,8 @@ public class CheckSum {
         int bitNumber = bitNumber(message.length);
         List<Integer> sums = new ArrayList<>(bitNumber + 1);
 
-        sums.add(xor(filterAllOneBitIndexes(message)));
+        List<Integer> oneBitIndexes = filterAllOneBitIndexes(message);
+        sums.add(xor(oneBitIndexes));
 
         for (int i = 0; i < bitNumber; i++) {
             sums.add(xor(filterOneBitIndexesWithOneOnPosition(message, i)));
@@ -21,6 +22,29 @@ public class CheckSum {
 
         return sums;
     }
+
+    public static List<Integer> countWithSquared(boolean[] message) {
+        int bitNumber = bitNumber(message.length);
+        List<Integer> sums = new ArrayList<>();
+
+        List<Integer> oneBitIndexes = filterAllOneBitIndexes(message);
+
+
+        sums.add(xor(oneBitIndexes));
+        sums.add(xor(filterAllOneBitIndexesAndShiftThird(message)));
+
+//        sums.add(xorSquared(oneBitIndexes));
+//        sums.add(xorCubed(oneBitIndexes));
+
+        for (int i = 0; i < bitNumber; i++) {
+            List<Integer> oneBitIndexesWithOneOnPosition = filterOneBitIndexesWithOneOnPosition(message, i);
+            sums.add(xor(oneBitIndexesWithOneOnPosition));
+//            sums.add(xor(squared(oneBitIndexesWithOneOnPosition)));
+        }
+
+        return sums;
+    }
+
 
     public static List<Integer> countShifted(boolean[] message) {
         int bitNumber = bitNumber(message.length);
@@ -36,29 +60,50 @@ public class CheckSum {
     }
 
 
-    private static List<Integer> filterAllOneBitIndexes(boolean[] message) {
-        List<Integer> indexes = new ArrayList<>();
-        for (int i = 0; i < message.length; i++) {
-            if (message[i])
-                indexes.add(i + 1);
+    private static List<Integer> filterAllOneBitIndexesAndShiftThird(boolean[] message) {
+        List<Integer> list = filterAllXBitIndexes(message, true);
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i) % 3 == 0){
+                list.set(i, list.get(i) << 1);
+            }
 
         }
+        return list;
+    }
 
+    private static int shiftIfDividable(final int number,final int divider){
+        if (number % divider == 0) return number << 1;
+        return number;
+    }
+
+    private static List<Integer> filterAllOneBitIndexes(boolean[] message) {
+        return filterAllXBitIndexes(message, true);
+    }
+
+    private static List<Integer> filterAllZeroBitIndexes(boolean[] message) {
+        return filterAllXBitIndexes(message, false);
+    }
+
+    private static List<Integer> filterAllXBitIndexes(boolean[] message, boolean bitValue) {
+        List<Integer> indexes = new ArrayList<>();
+        for (int i = 0; i < message.length; i++) {
+            if (message[i] == bitValue)
+                indexes.add(i + 1);
+        }
         return indexes;
-
     }
 
     private static int shiftRight(int value, int bitNumber) {
         int distance = value % 4;
 
 //        int distance = 2;
-        return ((value >>> distance) | (value << (bitNumber - distance))) & (~(1<<bitNumber));
+        return ((value >>> distance) | (value << (bitNumber - distance))) & (~(1 << bitNumber));
     }
 
     private static int shiftLeft(int value, int bitNumber) {
         int distance = value % 4;
 //        int distance = 3;
-        return ((value << distance) | (value >>> (bitNumber - distance))) & (~(1<<bitNumber));
+        return ((value << distance) | (value >>> (bitNumber - distance))) & (~(1 << bitNumber));
     }
 
 
@@ -79,7 +124,6 @@ public class CheckSum {
                 indexes.add(i + 1);
 
         }
-
         return indexes;
     }
 }
