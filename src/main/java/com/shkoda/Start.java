@@ -41,7 +41,5 @@ public class Start {
             logError(message, badMessage, fixed, badSum, correctSum, delta, errors);
         }
 
-
-        //time to start diploma =)
     }
 }

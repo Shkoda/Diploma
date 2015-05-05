@@ -1,6 +1,5 @@
 package com.shkoda.generator;
 
-import com.shkoda.utils.Formatter;
 import com.shkoda.utils.MathUtils;
 
 import java.util.*;
@@ -14,30 +13,43 @@ public class IndexGenerator {
         indexes.forEach(System.out::println);
     }
 
+    public static Set<Indexes> generateNumbersWithDifferenceInTwoBits(int minIndex, int maxIndex, int lowPosition, int highPosition) {
+        Set<Indexes> result = new TreeSet<>();
+
+        for (int value = minIndex; value <= maxIndex; value++) {
+
+            int high = 1 << highPosition;
+            int low = 1 << lowPosition;
+
+            int mask = ~(high + low);
+            int masked = value & mask;
+
+            Indexes indexes = new Indexes();
+            indexes.add(masked)
+                    .add(masked + low)
+                    .add(masked + high)
+                    .add(masked + low + high)
+                    .sort();
+            if (indexes.inRange(minIndex, maxIndex))
+                result.add(indexes);
+
+        }
+        return result;
+    }
+
+
     public static Set<Indexes> generateNumbersWithDifferenceInTwoBits(int minIndex, int maxIndex) {
         Set<Indexes> result = new TreeSet<>();
         int bitNumber = MathUtils.bitNumber(maxIndex);
 
-        for (int value = minIndex; value <= maxIndex; value++) {
-            for (int highPosition = 1; highPosition < bitNumber; highPosition++) {
-                for (int lowPosition = highPosition - 1; lowPosition >= 0; lowPosition--) {
+        for (int highPosition = 1; highPosition < bitNumber; highPosition++) {
+            for (int lowPosition = highPosition - 1; lowPosition >= 0; lowPosition--) {
 
-                    int high = 1 << highPosition;
-                    int low = 1 << lowPosition;
-
-                    int mask = ~(high + low);
-                    int masked = value & mask;
-
-                    Indexes indexes = new Indexes();
-                    indexes.add(masked)
-                            .add(masked + low)
-                            .add(masked + high)
-                            .add(masked + low + high)
-                            .sort();
-                    result.add(indexes);
-                }
+                Set<Indexes> indexes = generateNumbersWithDifferenceInTwoBits(minIndex, maxIndex, lowPosition, highPosition);
+                result.addAll(indexes);
             }
         }
+
         return result;
 
     }
@@ -49,6 +61,11 @@ public class IndexGenerator {
         public Indexes add(int index) {
             arr[pointer++] = index;
             return this;
+        }
+
+        public boolean inRange(int min, int max) {
+            sort();
+            return !(arr[0] < min || arr[arr.length - 1] > max);
         }
 
         public void sort() {
