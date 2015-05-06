@@ -30,7 +30,7 @@ public class Formatter {
         sb.append("Bad sums     :: ").append(badSum).append("\n");
         sb.append("Delta sums   :: ").append(MathUtils.xor(sum, badSum)).append("\n\n");
 
-        sb.append("Real bad positions  :: ").append(Arrays.toString(errorIndexes)).append("\n");
+        sb.append("Real bad positions  :: ").append(Arrays.toString(errorIndexes)).append("\t").append(Formatter.toBinaryString(errorIndexes)).append("\n");
 //        sb.append("Found bad positions :: ").append(Arrays.toString(TripleErrorCorrector.errorPositions(badMessage, sum))).append("\n");
         sb.append("Found bad positions :: ").append(Arrays.toString(TripleErrorCorrector.solve(MathUtils.xor(sum, badSum)))).append("\n");
 
@@ -56,7 +56,9 @@ public class Formatter {
 
         System.err.print(sb.toString());
     }
-
+    public static String toBinaryString(int value){
+        return toBinaryString(value, MathUtils.bitNumber(value));
+    }
     public static String toBinaryString(int value, int bitNumber){
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i< bitNumber; i++)

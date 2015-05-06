@@ -11,6 +11,25 @@ import static java.lang.Math.*;
  * Created by Nightingale on 10.04.2015.
  */
 public class MathUtils {
+
+    public static void main(String[] args) {
+        for (int i = 3; i< 1024; i+=3){
+            int oneBits = countOneBits(i);
+            if (oneBits % 2 != 0) System.out.println(i+" "+Formatter.toBinaryString(i));
+        }
+    }
+    public static int countOneBits(int value){
+        int c = 0;
+        int tmp = value;
+        while (tmp >0){
+            c += tmp & 1;
+            tmp >>= 1;
+        }
+
+        return c;
+
+    }
+
     public static int bitNumber(int value) {
         return (int) ceil(log(value + 1) / log(2));
     }
@@ -41,7 +60,7 @@ public class MathUtils {
     }
 
     public static List<Integer> cubed(List<Integer> indexes) {
-        return map(indexes, (integer -> integer*integer*integer));
+        return map(indexes, (integer -> integer * integer * integer));
     }
 
 public static List<Integer> map(List<Integer> indexes, Function<Integer, Integer> function) {
@@ -71,8 +90,4 @@ public static List<Integer> map(List<Integer> indexes, Function<Integer, Integer
         return true;
     }
 
-
-    public static void main(String[] args) {
-        System.out.println(hasOneBitOnPosition(5, 4));
-    }
 }

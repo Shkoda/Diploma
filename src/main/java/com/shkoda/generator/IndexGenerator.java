@@ -9,7 +9,7 @@ import java.util.*;
  */
 public class IndexGenerator {
     public static void main(String[] args) {
-        Set<Indexes> indexes = generateNumbersWithDifferenceInTwoBits(1, 15);
+        Set<Indexes> indexes = generateNumbersWithDifferenceInTwoBits(1, 32);
         indexes.forEach(System.out::println);
     }
 
@@ -67,7 +67,21 @@ public class IndexGenerator {
             return countDividable(byValue) == 0;
         }
 
+        public List<Integer> dividable(int byValue) {
+            List<Integer> res = new ArrayList<>();
+            for (int i : arr) {
+                if (i % byValue == 0) res.add(i);
+            }
+            return res;
+        }
 
+        public int sumDividable(int byValue) {
+            int res = 0;
+            for (int i : arr) {
+                if (i % byValue == 0) res ^= i;
+            }
+            return res;
+        }
 
         public int countDividable(int byValue) {
             int counter = 0;
@@ -86,8 +100,9 @@ public class IndexGenerator {
             return !(arr[0] < min || arr[arr.length - 1] > max);
         }
 
-        public void sort() {
+        public Indexes sort() {
             Arrays.sort(arr);
+            return this;
         }
 
         @Override

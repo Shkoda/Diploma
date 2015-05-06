@@ -2,6 +2,7 @@ package com.shkoda.sum;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.shkoda.utils.MathUtils.*;
 
@@ -23,7 +24,7 @@ public class CheckSum {
         return sums;
     }
 
-    public static List<Integer> countWithSquared(boolean[] message) {
+    public static List<Integer> countWithThird(boolean[] message) {
         int bitNumber = bitNumber(message.length);
         List<Integer> sums = new ArrayList<>();
 
@@ -31,7 +32,9 @@ public class CheckSum {
 
 
         sums.add(xor(oneBitIndexes));
-        sums.add(xor(filterAllOneBitIndexesAndShiftThird(message)));
+        sums.add(xor(oneBitIndexes.stream()
+                .filter(i -> i % 3 == 0)
+                .collect(Collectors.toList())));
 
 //        sums.add(xorSquared(oneBitIndexes));
 //        sums.add(xorCubed(oneBitIndexes));
@@ -63,7 +66,7 @@ public class CheckSum {
     private static List<Integer> filterAllOneBitIndexesAndShiftThird(boolean[] message) {
         List<Integer> list = filterAllXBitIndexes(message, true);
         for (int i = 0; i < list.size(); i++) {
-            if (list.get(i) % 3 == 0){
+            if (list.get(i) % 3 == 0) {
                 list.set(i, list.get(i) << 1);
             }
 
@@ -71,7 +74,7 @@ public class CheckSum {
         return list;
     }
 
-    private static int shiftIfDividable(final int number,final int divider){
+    private static int shiftIfDividable(final int number, final int divider) {
         if (number % divider == 0) return number << 1;
         return number;
     }
