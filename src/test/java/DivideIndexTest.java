@@ -1,4 +1,5 @@
 import com.shkoda.generator.IndexGenerator;
+import com.shkoda.structures.Indexes;
 import org.junit.Test;
 
 import java.util.List;
@@ -14,8 +15,8 @@ public class DivideIndexTest {
     @Test
     public void test() throws Exception {
 
-        Set<IndexGenerator.Indexes> indexes = IndexGenerator.generateNumbersWithDifferenceInTwoBits(1, 1024);
-        List<IndexGenerator.Indexes> collect = indexes.stream()
+        Set<Indexes> indexes = IndexGenerator.generateNumbersWithDifferenceInTwoBits(1, 1024);
+        List<Indexes> collect = indexes.stream()
                 .filter(index -> index.countDividable(3) == 2)
                 .filter(index -> index.sumDividable(3) % 3 == 1)
                 .filter(index -> {

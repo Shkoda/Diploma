@@ -1,4 +1,5 @@
 import com.shkoda.generator.IndexGenerator;
+import com.shkoda.structures.Indexes;
 import com.shkoda.utils.Formatter;
 import com.shkoda.utils.MathUtils;
 import org.junit.Test;
@@ -19,13 +20,13 @@ public class IndexTest {
     public void test() throws Exception {
         int length = 15;
         boolean[] message = generateMessage(length);
-        Set<IndexGenerator.Indexes> indexes = IndexGenerator.generateNumbersWithDifferenceInTwoBits(1, message.length, 1, 2);
+        Set<Indexes> indexes = IndexGenerator.generateNumbersWithDifferenceInTwoBits(1, message.length, 1, 2);
 
 //        while (MessageGenerator.hasNext(message)) {
 //            List<Integer> sum = count(message);
 //        for (int i = 0; i < 10; i++) {
 
-        for (IndexGenerator.Indexes index : indexes) {
+        for (Indexes index : indexes) {
 //                boolean[] message = generateMessage(length);
             List<Integer> sum = countWithThird(message);
             int[] errors = index.get();

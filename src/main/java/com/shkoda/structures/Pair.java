@@ -1,4 +1,4 @@
-package com.shkoda.utils;
+package com.shkoda.structures;
 
 /**
  * Created by Nightingale on 06.05.2015.

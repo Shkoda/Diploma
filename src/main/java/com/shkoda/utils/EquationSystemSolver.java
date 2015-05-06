@@ -1,8 +1,8 @@
 package com.shkoda.utils;
 
 import com.shkoda.generator.IndexGenerator;
+import com.shkoda.structures.Indexes;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -10,11 +10,12 @@ import java.util.stream.Collectors;
 /**
  * Created by Nightingale on 06.05.2015.
  */
+@Deprecated
 public class EquationSystemSolver {
 
     public static void main(String[] args) {
-        Set<IndexGenerator.Indexes> indexes = IndexGenerator.generateNumbersWithDifferenceInTwoBits(1, 1024);
-        List<IndexGenerator.Indexes> collect = indexes.stream()
+        Set<Indexes> indexes = IndexGenerator.generateNumbersWithDifferenceInTwoBits(1, 1024);
+        List<Indexes> collect = indexes.stream()
                 .filter(index -> index.countDividable(3) == 2)
                 .filter(index -> index.sumDividable(3) % 3 == 1)
                 .collect(Collectors.toList());
@@ -48,9 +49,9 @@ public class EquationSystemSolver {
      * @param xPosition const bit
      * @param yPosition const bit
      */
-    public static IndexGenerator.Indexes solveForModuloOne(int xPosition, int yPosition) {
+    public static Indexes solveForModuloOne(int xPosition, int yPosition) {
         int x = 0, y = 1;
-        IndexGenerator.Indexes indexes = build(x, xPosition, y, yPosition);
+        Indexes indexes = build(x, xPosition, y, yPosition);
         int[] arr = indexes.get();
 
         if (arr[1] % 3 == 0
@@ -65,7 +66,7 @@ public class EquationSystemSolver {
 
     }
 
-    private static IndexGenerator.Indexes build(int x, int xPosition, int y, int yPosition) {
+    private static Indexes build(int x, int xPosition, int y, int yPosition) {
 
         int firstVarPosition = -1, secondVarPosition = -1;
         for (int i = 0; i < 4; i++) {
@@ -81,7 +82,7 @@ public class EquationSystemSolver {
         int i2 = fixedPart + (1 << secondVarPosition);
         int i3 = fixedPart;
         int i4 = fixedPart + ((1 << firstVarPosition) + (1 << secondVarPosition));
-        return new IndexGenerator.Indexes()
+        return new Indexes()
                 .add(i1)
                 .add(i2)
                 .add(i3)

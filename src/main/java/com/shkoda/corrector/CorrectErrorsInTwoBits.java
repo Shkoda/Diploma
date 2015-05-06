@@ -10,14 +10,12 @@ public class CorrectErrorsInTwoBits {
         int[] errors = new int[5];
 
         int thirds = deltas.get(1);
-       int modulo = thirds % 3;
-        switch (modulo){
+        int modulo = thirds % 3;
+        switch (modulo) {
             case 1:
                 //индексы средние на 3 делятся, крайние - нет
 
         }
-
-
 
 
         return errors;

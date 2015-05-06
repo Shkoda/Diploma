@@ -12,22 +12,14 @@ import static java.lang.Math.*;
  */
 public class MathUtils {
 
-    public static void main(String[] args) {
-        for (int i = 3; i< 1024; i+=3){
-            int oneBits = countOneBits(i);
-            if (oneBits % 2 != 0) System.out.println(i+" "+Formatter.toBinaryString(i));
-        }
-    }
-    public static int countOneBits(int value){
+    public static int countOneBits(int value) {
         int c = 0;
         int tmp = value;
-        while (tmp >0){
+        while (tmp > 0) {
             c += tmp & 1;
             tmp >>= 1;
         }
-
         return c;
-
     }
 
     public static int bitNumber(int value) {
@@ -50,6 +42,7 @@ public class MathUtils {
         List<Integer> squaredIndexes = squared(indexes);
         return xor(squaredIndexes);
     }
+
     public static int xorCubed(List<Integer> indexes) {
         List<Integer> cubedIndexes = cubed(indexes);
         return xor(cubedIndexes);
@@ -63,13 +56,11 @@ public class MathUtils {
         return map(indexes, (integer -> integer * integer * integer));
     }
 
-public static List<Integer> map(List<Integer> indexes, Function<Integer, Integer> function) {
+    public static List<Integer> map(List<Integer> indexes, Function<Integer, Integer> function) {
         return indexes.stream()
                 .map(function::apply)
                 .collect(Collectors.toList());
-
     }
-
 
     public static List<Integer> xor(List<Integer> first, List<Integer> second) {
         List<Integer> xor = new ArrayList<>();
@@ -77,10 +68,8 @@ public static List<Integer> map(List<Integer> indexes, Function<Integer, Integer
         for (int i = 0; i < first.size(); i++) {
             xor.add(first.get(i) ^ second.get(i));
         }
-
         return xor;
     }
-
 
     public static boolean equalsSorted(int[] first, int[] second) {
         for (int i = 0; i < first.length; i++) {
@@ -89,5 +78,4 @@ public static List<Integer> map(List<Integer> indexes, Function<Integer, Integer
         }
         return true;
     }
-
 }
