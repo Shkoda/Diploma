@@ -2,7 +2,7 @@ package com.shkoda;
 
 import com.shkoda.corrector.TripleErrorCorrector;
 import com.shkoda.generator.MessageGenerator;
-import com.shkoda.sum.CheckSum;
+import com.shkoda.sum.CheckSumCounter;
 import com.shkoda.utils.MathUtils;
 
 import java.util.List;
@@ -18,14 +18,14 @@ public class Start {
 //        boolean[] message = MessageGenerator.generateMessage(new int[]{
 //                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0});
         boolean[] message = MessageGenerator.generateMessage(16);
-        List<Integer> correctSum = CheckSum.countWithThird(message);
+        List<Integer> correctSum = CheckSumCounter.countWithThird(message);
 
 //        int[] errors = new int[]{4,6,12,14};
         int[] errors = new int[]{9,11,13,15};
 
         boolean[] badMessage = MessageGenerator.invertBits(message, errors);
 
-        List<Integer> badSum = CheckSum.countWithThird(badMessage);
+        List<Integer> badSum = CheckSumCounter.countWithThird(badMessage);
 
         List<Integer> delta = MathUtils.xor(correctSum, badSum);
         boolean[] fixed = null;

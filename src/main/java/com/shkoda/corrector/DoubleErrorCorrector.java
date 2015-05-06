@@ -5,12 +5,13 @@ import com.shkoda.utils.MathUtils;
 
 import java.util.List;
 
-import static com.shkoda.sum.CheckSum.count;
+import static com.shkoda.sum.CheckSumCounter.count;
 import static com.shkoda.utils.MathUtils.xor;
 
 /**
  * Created by Nightingale on 10.04.2015.
  */
+@Deprecated
 public class DoubleErrorCorrector {
 
     public static int[] errorPositions(boolean[] message, List<Integer> correctSums) {

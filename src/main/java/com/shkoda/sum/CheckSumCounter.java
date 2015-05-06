@@ -9,7 +9,8 @@ import static com.shkoda.utils.MathUtils.*;
 /**
  * Created by Nightingale on 10.04.2015.
  */
-public class CheckSum {
+public class CheckSumCounter {
+
     public static List<Integer> count(boolean[] message) {
         int bitNumber = bitNumber(message.length);
         List<Integer> sums = new ArrayList<>(bitNumber + 1);
@@ -79,7 +80,7 @@ public class CheckSum {
         return number;
     }
 
-    private static List<Integer> filterAllOneBitIndexes(boolean[] message) {
+    public static List<Integer> filterAllOneBitIndexes(boolean[] message) {
         return filterAllXBitIndexes(message, true);
     }
 
@@ -120,7 +121,7 @@ public class CheckSum {
     }
 
 
-    private static List<Integer> filterOneBitIndexesWithOneOnPosition(boolean[] message, int oneBitPositionNumber) {
+    public static List<Integer> filterOneBitIndexesWithOneOnPosition(boolean[] message, int oneBitPositionNumber) {
         List<Integer> indexes = new ArrayList<>();
         for (int i = 0; i < message.length; i++) {
             if (message[i] && hasOneBitOnPosition(i + 1, oneBitPositionNumber))

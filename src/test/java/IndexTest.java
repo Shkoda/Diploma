@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 import static com.shkoda.generator.MessageGenerator.*;
-import static com.shkoda.sum.CheckSum.countWithThird;
+import static com.shkoda.sum.CheckSumCounter.countWithThird;
 import static com.shkoda.utils.Formatter.logError;
 
 /**

@@ -9,7 +9,7 @@ import java.util.Random;
 
 import static com.shkoda.generator.MessageGenerator.generateMessage;
 import static com.shkoda.generator.MessageGenerator.invertBits;
-import static com.shkoda.sum.CheckSum.count;
+import static com.shkoda.sum.CheckSumCounter.count;
 import static com.shkoda.utils.Formatter.logError;
 
 /**

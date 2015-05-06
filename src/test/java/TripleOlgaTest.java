@@ -1,6 +1,5 @@
 import com.shkoda.corrector.TripleErrorCorrector;
 import com.shkoda.generator.MessageGenerator;
-import com.shkoda.utils.Formatter;
 import com.shkoda.utils.MathUtils;
 import org.junit.Test;
 
@@ -8,7 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static com.shkoda.generator.MessageGenerator.*;
-import static com.shkoda.sum.CheckSum.count;
+import static com.shkoda.sum.CheckSumCounter.count;
 import static com.shkoda.utils.Formatter.*;
 
 /**
