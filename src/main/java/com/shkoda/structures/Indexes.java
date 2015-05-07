@@ -1,7 +1,5 @@
 package com.shkoda.structures;
 
-import com.shkoda.generator.IndexGenerator;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

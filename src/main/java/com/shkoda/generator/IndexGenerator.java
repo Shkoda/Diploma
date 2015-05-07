@@ -3,7 +3,8 @@ package com.shkoda.generator;
 import com.shkoda.structures.Indexes;
 import com.shkoda.utils.MathUtils;
 
-import java.util.*;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * Created by Nightingale on 26.04.2015.

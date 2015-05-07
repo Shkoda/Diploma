@@ -27,10 +27,9 @@ public class ShiftedCheckSum extends AbstractCheckSum<ShiftedCheckSum> {
         for (int i = 0; i < bitNumber; i++) {
             List<Integer> indexes = filterOneBitIndexesWithOneOnPosition(message, i);
             int xor = xor(shifted(indexes, bitNumber));
-            addOneBitOnPositionXor(new PositionPair(i, xor));
+            this.oneBitOnPositionXor.add(new PositionPair(i, xor));
         }
     }
-
 
     private static List<Integer> shifted(List<Integer> indexes, int bitNumber) {
         return indexes.stream()
@@ -38,26 +37,15 @@ public class ShiftedCheckSum extends AbstractCheckSum<ShiftedCheckSum> {
                 .collect(Collectors.toList());
     }
 
-
-    public ShiftedCheckSum addOneBitOnPositionXor(PositionPair pair) {
-        this.oneBitOnPositionXor.add(pair);
-        return this;
-    }
-
-    public ShiftedCheckSum setOneBitIndexesXor(int oneBitIndexesXor) {
-        this.oneBitIndexesXor = oneBitIndexesXor;
-        return this;
-    }
-
     public ShiftedCheckSum delta(ShiftedCheckSum other) {
         ShiftedCheckSum delta = new ShiftedCheckSum();
         delta.bitNumber = this.bitNumber;
-        delta.setOneBitIndexesXor(this.oneBitIndexesXor ^ other.oneBitIndexesXor);
+        delta.oneBitIndexesXor = this.oneBitIndexesXor ^ other.oneBitIndexesXor;
 
         int size = this.oneBitOnPositionXor.size();
         for (int i = 0; i < size; i++) {
             PositionPair xor = PositionPair.xor(this.oneBitOnPositionXor.get(i), other.oneBitOnPositionXor.get(i));
-            delta.addOneBitOnPositionXor(xor);
+            delta.oneBitOnPositionXor.add(xor);
         }
         return delta;
     }

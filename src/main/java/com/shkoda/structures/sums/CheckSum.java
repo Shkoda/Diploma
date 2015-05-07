@@ -1,21 +1,19 @@
 package com.shkoda.structures.sums;
 
 import com.shkoda.structures.PositionPair;
-import com.shkoda.utils.Formatter;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.shkoda.sum.CheckSumCounter.*;
+import static com.shkoda.sum.CheckSumCounter.filterAllOneBitIndexes;
+import static com.shkoda.sum.CheckSumCounter.filterOneBitIndexesWithOneOnPosition;
 import static com.shkoda.utils.MathUtils.xor;
 
 /**
  * Created by Nightingale on 06.05.2015.
  */
 public class CheckSum extends AbstractCheckSum<CheckSum> {
-
     private int dividableByThreeIndexXor;
-
     private int countDividableByThree;
 
     public CheckSum(boolean[] message) {
@@ -31,7 +29,7 @@ public class CheckSum extends AbstractCheckSum<CheckSum> {
 
         for (int i = 0; i < bitNumber; i++) {
             int xor = xor(filterOneBitIndexesWithOneOnPosition(message, i));
-            addOneBitOnPositionXor(new PositionPair(i, xor));
+            this.oneBitOnPositionXor.add(new PositionPair(i, xor));
         }
     }
 
@@ -39,30 +37,16 @@ public class CheckSum extends AbstractCheckSum<CheckSum> {
         super();
     }
 
-
-
-    @Override
-    public CheckSum addOneBitOnPositionXor(PositionPair pair) {
-        this.oneBitOnPositionXor.add(pair);
-        return this;
-    }
-
-    @Override
-    public CheckSum setOneBitIndexesXor(int oneBitIndexesXor) {
-        this.oneBitIndexesXor = oneBitIndexesXor;
-        return this;
-    }
-
     public CheckSum delta(CheckSum other) {
         CheckSum delta = new CheckSum();
         delta.bitNumber = this.bitNumber;
-        delta.setOneBitIndexesXor(this.oneBitIndexesXor ^ other.oneBitIndexesXor);
+        delta.oneBitIndexesXor = this.oneBitIndexesXor ^ other.oneBitIndexesXor;
         delta.dividableByThreeIndexXor = this.dividableByThreeIndexXor ^ other.dividableByThreeIndexXor;
         delta.countDividableByThree = other.countDividableByThree - this.countDividableByThree;
         int size = this.oneBitOnPositionXor.size();
         for (int i = 0; i < size; i++) {
             PositionPair xor = PositionPair.xor(this.oneBitOnPositionXor.get(i), other.oneBitOnPositionXor.get(i));
-            delta.addOneBitOnPositionXor(xor);
+            delta.oneBitOnPositionXor.add(xor);
         }
         return delta;
     }
@@ -75,8 +59,7 @@ public class CheckSum extends AbstractCheckSum<CheckSum> {
                 .append(" ").append(countDividableByThree)
                 .append(" | ");
 
-        oneBitOnPositionXor.forEach(i -> sb.append(String.format("%d ", i.value, Formatter.toBinaryString(i.value, bitNumber))));
-
+        oneBitOnPositionXor.forEach(i -> sb.append(String.format("%d ", i.value)));
         sb.append("}");
         return sb.toString();
     }
