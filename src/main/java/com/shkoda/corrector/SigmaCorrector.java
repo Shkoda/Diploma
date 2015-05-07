@@ -99,15 +99,14 @@ public class SigmaCorrector {
 
         }
 
-
-        return null;
+        return isValid(receivedMessage, correctSum, result2) ? result2 : null;
     }
 
 
     private static boolean isValid(boolean[] receivedMessage, SigmaCheckSum correctSum, QuadraResult result) {
         boolean[] fixedMessage = result.generateFixedMessage(receivedMessage);
         SigmaCheckSum sum = new SigmaCheckSum(fixedMessage);
-        return SigmaCheckSum.equals(correctSum, sum) ;
+        return SigmaCheckSum.equals(correctSum, sum);
 
     }
 

@@ -9,7 +9,7 @@ import org.junit.Test;
 /**
  * Created by Nightingale on 07.05.2015.
  */
-public class SigmaTest {
+public class SingleSigmaTest {
     private boolean[] message;
     private int[] errors;
 
@@ -21,7 +21,7 @@ public class SigmaTest {
                         1, 0, 1, 1,
                         0, 0, 0, 0,
                         0, 0,});
-        errors = new int[]{2, 4, 6, 12};
+        errors = new int[]{9, 11, 13, 15};
     }
 
     @Test
