@@ -1,25 +1,34 @@
 package com.shkoda;
 
 import com.shkoda.generator.MessageGenerator;
-import com.shkoda.structures.CheckSum;
+import com.shkoda.structures.sums.AbstractCheckSum;
+import com.shkoda.structures.sums.CheckSum;
+import com.shkoda.utils.Formatter;
 
 /**
  * Created by Nightingale on 06.05.2015.
  */
 public class Main {
     private static final boolean[] message = MessageGenerator.generateMessage(
-            new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,});
-    private static final int[] errors = {1, 3, 5, 7};
+            new int[]{0, 0, 0, 0,
+                    0, 0, 0, 0,
+                    0, 0, 0, 0,
+                    0, 0, 0, 0,
+                    0, 0,});
+    private static final int[] errors = {1,3,5,7};
 
     public static void main(String[] args) {
-        CheckSum correctSum = CheckSum.build(message);
         boolean[] badMessage = MessageGenerator.invertBits(message, errors);
-        CheckSum badSum = CheckSum.build(badMessage);
 
-        CheckSum delta = CheckSum.delta(correctSum, badSum);
+        AbstractCheckSum correctSum = new CheckSum(message);
+        AbstractCheckSum badSum = new CheckSum(badMessage);
 
-        System.out.println(delta);
+        AbstractCheckSum delta = correctSum.delta(badSum);
+
+        System.out.println(Formatter.toString(message, correctSum, badMessage, badSum, delta, errors));
     }
+
+
 
 
 }

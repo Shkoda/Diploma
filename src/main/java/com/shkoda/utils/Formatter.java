@@ -1,6 +1,7 @@
 package com.shkoda.utils;
 
 import com.shkoda.corrector.TripleErrorCorrector;
+import com.shkoda.structures.sums.AbstractCheckSum;
 
 import java.util.Arrays;
 import java.util.List;
@@ -9,6 +10,22 @@ import java.util.List;
  * Created by Nightingale on 10.04.2015.
  */
 public class Formatter {
+    public static String toString(boolean[] correctMessage, AbstractCheckSum correctSum, boolean[] badMessage, AbstractCheckSum badSum, AbstractCheckSum delta, int[] realBadIndexes){
+        StringBuilder sb = new StringBuilder();
+        sb.append("Original :: ").append(Formatter.toString(correctMessage)).append("\n");
+        sb.append("Damaged  :: ").append(Formatter.toString(badMessage)).append("\n\n");
+
+        sb.append("Control sums :: ").append(correctSum).append("\n");
+        sb.append("Bad sums     :: ").append(badSum).append("\n");
+        sb.append("Delta sums   :: ").append(delta).append("\n\n");
+
+        sb.append("Real bad positions  :: ").append(Arrays.toString(realBadIndexes)).append("\t").append(Formatter.toBinaryString(realBadIndexes)).append("\n");
+//        sb.append("Found bad positions :: ").append(Arrays.toString(TripleErrorCorrector.errorPositions(badMessage, sum))).append("\n");
+//        sb.append("Found bad positions :: ").append(Arrays.toString(TripleErrorCorrector.solve(MathUtils.xor(sum, badSum)))).append("\n");
+        return sb.toString();
+    }
+
+
     public static String toString(boolean[] message) {
         if (message == null)
             return "null";

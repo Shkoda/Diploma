@@ -84,6 +84,8 @@ public class CheckSumCounter {
         return filterAllXBitIndexes(message, true);
     }
 
+
+
     private static List<Integer> filterAllZeroBitIndexes(boolean[] message) {
         return filterAllXBitIndexes(message, false);
     }
