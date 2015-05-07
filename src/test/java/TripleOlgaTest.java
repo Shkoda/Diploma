@@ -30,7 +30,7 @@ public class TripleOlgaTest {
                 int[] positions = null;
                 List<Integer> delta = MathUtils.xor(sum, badSum);
                 try {
-                    positions = TripleErrorCorrector.solve(delta);
+                    positions = TripleErrorCorrector.solve(delta).toArray();
                     fixed = MessageGenerator.invertBits(badMessage, positions);
                 } catch (Exception e) {
                   logError(message, badMessage, fixed, badSum, sum, delta, errors, positions);

@@ -49,7 +49,7 @@ public class Formatter {
 
         sb.append("Real bad positions  :: ").append(Arrays.toString(errorIndexes)).append("\t").append(Formatter.toBinaryString(errorIndexes)).append("\n");
 //        sb.append("Found bad positions :: ").append(Arrays.toString(TripleErrorCorrector.errorPositions(badMessage, sum))).append("\n");
-        sb.append("Found bad positions :: ").append(Arrays.toString(TripleErrorCorrector.solve(MathUtils.xor(sum, badSum)))).append("\n");
+        sb.append("Found bad positions :: ").append(Arrays.toString(TripleErrorCorrector.solve(MathUtils.xor(sum, badSum)).toArray())).append("\n");
 
 
         System.err.print(sb.toString());

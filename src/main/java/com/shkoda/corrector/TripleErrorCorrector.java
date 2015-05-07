@@ -1,5 +1,6 @@
 package com.shkoda.corrector;
 
+import com.shkoda.structures.results.TripleResult;
 import com.shkoda.utils.Formatter;
 
 import java.util.Arrays;
@@ -78,7 +79,11 @@ Found bad positions :: [3, 1, 0]
 //
 
             //6 Якщо delta[j] != delta[0] && delta[j] != delta[tmp] && delta[j] !=  0,
-            sb.append(format("6. %s[%d] = %d\n", Arrays.toString(delta), j, delta[j]));
+            sb.append(format("6. %s[%d] = %d\n",
+                    Arrays.toString(delta),
+                    j,
+                    delta[j]));
+
             if (delta[j] != delta[0] && delta[j] != delta[tmp] && delta[j] != 0) {
                 sb.append(format("\tbit in %s on position %d = %d\n",
                         Formatter.toBinaryString(low, bitNumber),
@@ -163,39 +168,13 @@ Found bad positions :: [3, 1, 0]
     }
 
 
-    public static int[] solve(List<Integer> deltaList) {
+    public static TripleResult solve(List<Integer> deltaList) {
         int[] delta = new int[deltaList.size()];
         for (int i = 0; i < deltaList.size(); i++) {
             delta[i] = deltaList.get(i);
         }
-        TripleResult result = solve(delta);
-        return result.toArray();
+       return solve(delta);
+//        return result.toArray();
     }
 
-    public static class TripleResult {
-        public final int low;
-        public final int middle;
-        public final int high;
-        public final String log;
-
-        public TripleResult(int low, int middle, int high, String log) {
-            this.low = low;
-            this.middle = middle;
-            this.high = high;
-            this.log = log;
-        }
-
-        public int[] toArray() {
-            return new int[]{low, middle, high};
-        }
-
-        @Override
-        public String toString() {
-            return "Result{" +
-                    "low=" + low +
-                    ", middle=" + middle +
-                    ", high=" + high +
-                    '}';
-        }
-    }
 }

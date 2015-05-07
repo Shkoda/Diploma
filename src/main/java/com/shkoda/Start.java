@@ -30,7 +30,7 @@ public class Start {
         List<Integer> delta = MathUtils.xor(correctSum, badSum);
         boolean[] fixed = null;
         try {
-            int[] errorIndexes = TripleErrorCorrector.solve(delta);
+            int[] errorIndexes = TripleErrorCorrector.solve(delta).toArray();
             fixed = MessageGenerator.invertBits(badMessage, errorIndexes);
 
         } catch (Exception e) {

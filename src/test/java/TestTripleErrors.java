@@ -36,7 +36,7 @@ public class TestTripleErrors {
                 boolean[] fixed = null;
                 int[] errorIndexes = null;
                 try {
-                    errorIndexes = TripleErrorCorrector.solve(delta);
+                    errorIndexes = TripleErrorCorrector.solve(delta).toArray();
 
 
                     fixed = MessageGenerator.invertBits(badMessage, errorIndexes);

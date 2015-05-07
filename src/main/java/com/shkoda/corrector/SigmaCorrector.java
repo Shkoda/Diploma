@@ -1,6 +1,7 @@
 package com.shkoda.corrector;
 
-import com.shkoda.structures.QuadraResult;
+import com.shkoda.structures.results.QuadraResult;
+import com.shkoda.structures.results.TripleResult;
 import com.shkoda.structures.sums.SigmaCheckSum;
 
 import java.util.List;
@@ -27,14 +28,14 @@ public class SigmaCorrector {
                 Змініюємо j-ті контрольні суми Δj = Δj + A, якщо aj = 1.
                 З допомогою зміненої контрольної суми шукаємо 3-кратну помилку.
                 */
-            result1 = solve(delta.oneBitOnPositionXor, deltaLambda);
+            result1 = solve(delta, deltaLambda);
 
             /* b)	Припускаємо, що Δλ = B + C + D.
                     Маємо один розв’язок A = Δ0 + Δλ.
                     Аналогічно до п. 2.2a змінюємо
                     контрольні суми й шукаємо 3-кратну помилку.
              */
-            result2 = solve(delta.oneBitOnPositionXor, deltaLambda ^ delta.oneBitIndexesXor);
+            result2 = solve(delta, deltaLambda ^ delta.oneBitIndexesXor);
         } else {
             //3.	Якщо Δ0 = 0, то присутні лише пусті (повні) й нульові контрольні суми.
             /*
@@ -68,21 +69,27 @@ public class SigmaCorrector {
                 deltaLambda = delta.sigma1;
             }
 
-            result1 = solve(delta.oneBitOnPositionXor, deltaLambda);
-            result2 = solve(delta.oneBitOnPositionXor, deltaLambda ^ delta.oneBitIndexesXor);
+            result1 = solve(delta, deltaLambda);
+            result2 = solve(delta, deltaLambda ^ delta.oneBitIndexesXor);
         }
 
+        System.out.println(String.format("delta Lambda = %d\n", deltaLambda));
+
+        System.out.println(result1.getLog()+"\n");
         System.out.println(result1);
-        System.out.println(result2);
+//        System.out.println(result2);
 
         return null;
     }
 
-    private static QuadraResult solve(List<Integer> deltas, int potentialRoot) {
-        List<Integer> modifiedDelta = xorWithValue(deltas, potentialRoot);
+    private static QuadraResult solve(SigmaCheckSum delta, int potentialRoot) {
+        List<Integer> modifiedDelta = xorWithValue(delta.oneBitOnPositionXor, potentialRoot);
+        modifiedDelta.add(0, delta.oneBitIndexesXor ^ potentialRoot);
 
-        int[] tripleSolution = TripleErrorCorrector.solve(modifiedDelta);
-        return new QuadraResult(potentialRoot, tripleSolution[0], tripleSolution[1], tripleSolution[2]);
+        TripleResult tripleResult = TripleErrorCorrector.solve(modifiedDelta);
+        int[] tripleSolution = tripleResult.toArray();
+        return new QuadraResult(potentialRoot, tripleSolution[0], tripleSolution[1], tripleSolution[2])
+                .setLog(tripleResult.log);
     }
 
     private static List<Integer> xorWithValue(List<Integer> list, int value) {
