@@ -16,12 +16,11 @@ public class SingleSigmaTest {
     @Before
     public void setUp() throws Exception {
         message = MessageGenerator.generateMessage(
-                new int[]{0, 1, 0, 1,
+                new int[]{0, 0, 0, 0,
                         0, 0, 0, 0,
-                        1, 0, 1, 1,
                         0, 0, 0, 0,
-                        0, 0,});
-        errors = new int[]{9, 11, 13, 15};
+                        0, 0, 0, 0});
+        errors = new int[]{8, 9, 13, 14};
     }
 
     @Test

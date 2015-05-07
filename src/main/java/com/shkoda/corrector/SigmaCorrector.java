@@ -1,5 +1,6 @@
 package com.shkoda.corrector;
 
+import com.shkoda.generator.MessageGenerator;
 import com.shkoda.structures.results.QuadraResult;
 import com.shkoda.structures.results.TripleResult;
 import com.shkoda.structures.sums.CheckSum;
@@ -10,21 +11,34 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.shkoda.utils.MathUtils.*;
+
 /**
  * Created by Nightingale on 07.05.2015.
  */
 public class SigmaCorrector {
     public static QuadraResult solve(boolean[] receivedMessage, SigmaCheckSum correctSum, SigmaCheckSum delta) {
         QuadraResult result1, result2;
-        int deltaLambda;
+        int deltaLambda = -1;
         //1.	Перевіряємо значення контрольної суми Δ0.
         if (delta.oneBitIndexesXor != 0) {
             //  2.	Якщо Δ0 ≠ 0, то присутня хоча б одна одинична контрольна сума Δλ, λ = 1..k.
             // 2.1.	Шукаємо Δλ.
-            deltaLambda = delta.oneBitOnPositionXor.stream()
-                    .filter(deltaK -> deltaK != 0)
-                    .findFirst()
-                    .get();
+
+
+            for (int i = 0; i <= delta.oneBitOnPositionXor.size(); i++) {
+                int deltaK = delta.oneBitOnPositionXor.get(i);
+                if (isOneControlSum(deltaK, i, delta.oneBitIndexesXor)) {
+                    deltaLambda = deltaK;
+                    break;
+                }
+            }
+
+//            deltaLambda = delta.oneBitOnPositionXor.stream()
+//                    .filter(deltaK -> deltaK != 0)
+//                    .filter(deltaK -> deltaK != delta.oneBitIndexesXor)
+//                    .findFirst()
+//                    .get();
             System.out.println(String.format("delta Lambda = %d\n", deltaLambda));
             //     2.2.	Знаходимо пару розв’язків (порядок A, B, C, D не важливий):
             /*  a)	Припускаємо, що Δλ = A. Маємо один розв’язок A = Δλ.
@@ -46,7 +60,9 @@ public class SigmaCorrector {
                     Аналогічно до п. 2.2a змінюємо
                     контрольні суми й шукаємо 3-кратну помилку.
              */
-            result2 = solve(delta, deltaLambda ^ delta.oneBitIndexesXor);
+            int potentialRoot = deltaLambda ^ delta.oneBitIndexesXor;
+            System.out.println(String.format("potentialRoot = %d\n", potentialRoot));
+            result2 = solve(delta, potentialRoot);
             System.out.println(result2.getLog() + "\n");
             System.out.println(result2);
 
@@ -56,11 +72,23 @@ public class SigmaCorrector {
             3.1.	Шукаємо нульові контрольні суми Δα і Δβ (Δβ ≠ Δα) починаючи з Δ1.
              У будь-якому випадку Δα = A + B = С + В, Δβ = A + C = B + D.
              */
-            List<Integer> deltas = delta.oneBitOnPositionXor.stream()
-                    .filter(deltaK -> deltaK != 0)
-                    .collect(Collectors.toList());
+
+            int deltaA = -1, deltaB = -1;
+
+            for (int i = 0; i <= delta.oneBitOnPositionXor.size(); i++) {
+                int deltaK = delta.oneBitOnPositionXor.get(i);
+                if (isZeroControlSum(deltaK, i, delta.oneBitIndexesXor)) {
+                    if (deltaA == -1) {
+                        deltaA = deltaK;
+                    } else {
+                        deltaB = deltaK;
+                        break;
+                    }
+                }
+            }
+
             // 3.2.	Обчислюємо Δγ = B + C = A + D = Δα + Δβ.
-            int deltaGamma = deltas.get(0) ^ deltas.get(1);
+            int deltaGamma = deltaA ^ deltaB;
 
             /*
                 3.3.	Припускаємо, що є хоча б одна додаткова контрольна сума Δλ, λ = ψ.. ψ+1,
@@ -75,8 +103,8 @@ public class SigmaCorrector {
 
             int sigma0 = delta.sigma0;
             if (sigma0 != delta.oneBitIndexesXor
-                    && sigma0 != deltas.get(0)
-                    && sigma0 != deltas.get(1)
+                    && sigma0 != deltaA
+                    && sigma0 != deltaB
                     && sigma0 != deltaGamma) {
                 deltaLambda = sigma0;
             } else {
@@ -92,14 +120,35 @@ public class SigmaCorrector {
 
             if (isValid(receivedMessage, correctSum, result1))
                 return result1;
-
-            result2 = solve(delta, deltaLambda ^ delta.oneBitIndexesXor);
+            int potentialRoot = deltaLambda ^ delta.oneBitIndexesXor;
+            System.out.println(String.format("potentialRoot= %d\n", potentialRoot));
+            result2 = solve(delta, potentialRoot);
             System.out.println(result2.getLog() + "\n");
             System.out.println(result2);
 
         }
 
         return isValid(receivedMessage, correctSum, result2) ? result2 : null;
+    }
+
+    private static boolean isEmptyControlSum(int deltaK, int delta0) {
+        return deltaK == 0;
+    }
+
+    private static boolean isFullControlSum(int deltaK, int delta0) {
+        return deltaK == delta0;
+    }
+
+    private static boolean isZeroControlSum(int deltaK, int k, int delta0) {
+        return !isEmptyControlSum(deltaK, delta0)
+                && !isFullControlSum(deltaK, delta0)
+                && bitOnPosition(deltaK, k + 1) == 0;
+    }
+
+    private static boolean isOneControlSum(int deltaK, int k, int delta0) {
+        return !isEmptyControlSum(deltaK, delta0)
+                && !isFullControlSum(deltaK, delta0)
+                && bitOnPosition(deltaK, k + 1) == 1;
     }
 
 
@@ -116,7 +165,7 @@ public class SigmaCorrector {
 
         for (int i = 0; i < modifiedDelta.size(); i++) {
             int current = modifiedDelta.get(i);
-            if (MathUtils.bitOnPosition(potentialRoot, i + 1) == 1)
+            if (bitOnPosition(potentialRoot, i + 1) == 1)
                 modifiedDelta.set(i, current ^ potentialRoot);
         }
 
