@@ -11,9 +11,9 @@ import com.shkoda.utils.Formatter;
  */
 public class Main {
     private static final boolean[] message = MessageGenerator.generateMessage(
-            new int[]{1, 1, 1, 1,
+            new int[]{1, 1, 0, 1,
                     0, 0, 0, 0,
-                    0, 0, 0, 0,
+                    1, 1, 1, 1,
                     0, 0, 0, 0,
                     0, 0,});
     private static final int[] errors = {1,3,5,7};

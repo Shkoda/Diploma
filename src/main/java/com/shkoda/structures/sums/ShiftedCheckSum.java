@@ -3,6 +3,7 @@ package com.shkoda.structures.sums;
 import com.shkoda.structures.PositionPair;
 import com.shkoda.utils.Formatter;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,7 +15,7 @@ import static com.shkoda.utils.MathUtils.xor;
  * Created by Nightingale on 06.05.2015.
  */
 public class ShiftedCheckSum extends AbstractCheckSum<ShiftedCheckSum> {
-
+    public List<PositionPair> oneBitOnPositionXor = new ArrayList<>();
     private ShiftedCheckSum() {
         super();
     }

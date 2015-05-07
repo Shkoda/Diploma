@@ -98,6 +98,14 @@ public class CheckSumCounter {
         }
         return indexes;
     }
+    public static List<Integer> allIndexes(boolean[] message) {
+        List<Integer> indexes = new ArrayList<>();
+        for (int i = 0; i < message.length; i++) {
+
+                indexes.add(i + 1);
+        }
+        return indexes;
+    }
 
     private static int shiftRight(int value, int bitNumber) {
         int distance = value % 4;

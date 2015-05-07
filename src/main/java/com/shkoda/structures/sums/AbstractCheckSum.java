@@ -12,8 +12,8 @@ import static com.shkoda.utils.MathUtils.bitNumber;
  */
 public abstract class AbstractCheckSum<T extends AbstractCheckSum> {
     protected int bitNumber;
-    protected int oneBitIndexesXor;
-    protected List<PositionPair> oneBitOnPositionXor = new ArrayList<>();
+    public int oneBitIndexesXor;
+
 
     public AbstractCheckSum(boolean[] message) {
         bitNumber = bitNumber(message.length);
@@ -21,6 +21,8 @@ public abstract class AbstractCheckSum<T extends AbstractCheckSum> {
 
     protected AbstractCheckSum() {
     }
+
+
 
     public abstract T delta(T other);
 }

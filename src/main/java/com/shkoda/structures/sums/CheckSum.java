@@ -2,6 +2,7 @@ package com.shkoda.structures.sums;
 
 import com.shkoda.structures.PositionPair;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,7 +16,7 @@ import static com.shkoda.utils.MathUtils.xor;
 public class CheckSum extends AbstractCheckSum<CheckSum> {
     private int dividableByThreeIndexXor;
     private int countDividableByThree;
-
+    public List<PositionPair> oneBitOnPositionXor = new ArrayList<>();
     public CheckSum(boolean[] message) {
         super(message);
         List<Integer> oneBitIndexes = filterAllOneBitIndexes(message);
