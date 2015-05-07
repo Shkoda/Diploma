@@ -1,8 +1,7 @@
-package com.shkoda.structures.sums;
-
 import com.shkoda.corrector.SigmaCorrector;
 import com.shkoda.generator.MessageGenerator;
 import com.shkoda.structures.results.QuadraResult;
+import com.shkoda.structures.sums.SigmaCheckSum;
 import com.shkoda.utils.Formatter;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,11 +16,12 @@ import static com.shkoda.generator.MessageGenerator.next;
 public class AutoSigmaTest {
     @Test
     public void test() throws Exception {
-        for (int length = 16; length < 64; length++) {
+        boolean ok = true;
+        for (int length = 16; ok && length < 64 ; length++) {
             boolean[] message = generateZeroMessage(length);
             int[] errors = MessageGenerator.generateSortedDifferentNumbers(length, 4);
 
-            while (solve(message, errors)) {
+            while (ok = solve(message, errors)) {
                 if (hasNext(message))
                     message = next(message);
                 else break;

@@ -20,7 +20,7 @@ public class SingleSigmaTest {
                         0, 0, 0, 0,
                         0, 0, 0, 0,
                         0, 0, 0, 0});
-        errors = new int[]{8, 9, 13, 14};
+        errors = new int[]{1, 4, 5, 14};
     }
 
     @Test

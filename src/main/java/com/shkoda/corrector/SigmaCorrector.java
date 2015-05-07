@@ -47,10 +47,16 @@ public class SigmaCorrector {
                 */
             result1 = solve(delta, deltaLambda);
 
-            System.out.println(result1.getLog() + "\n");
-            System.out.println(result1);
+            if (result1 != null){
+                System.out.println(result1.getLog() + "\n");
+                System.out.println(result1);
 
-            System.out.println();
+                System.out.println();
+            }else {
+                System.out.println("result1 is null");
+            }
+
+
 
             if (isValid(receivedMessage, correctSum, result1))
                 return result1;
@@ -153,6 +159,8 @@ public class SigmaCorrector {
 
 
     private static boolean isValid(boolean[] receivedMessage, SigmaCheckSum correctSum, QuadraResult result) {
+        if (result == null)
+            return false;
         boolean[] fixedMessage = result.generateFixedMessage(receivedMessage);
         SigmaCheckSum sum = new SigmaCheckSum(fixedMessage);
         return SigmaCheckSum.equals(correctSum, sum);
@@ -173,6 +181,8 @@ public class SigmaCorrector {
         modifiedDelta.add(0, delta.oneBitIndexesXor ^ potentialRoot);
 
         TripleResult tripleResult = TripleErrorCorrector.solve(modifiedDelta);
+        if (tripleResult == null)
+            return null;
         int[] tripleSolution = tripleResult.toArray();
         return new QuadraResult(potentialRoot, tripleSolution[0], tripleSolution[1], tripleSolution[2])
                 .setLog(tripleResult.log);
