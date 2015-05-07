@@ -32,6 +32,11 @@ public class MathUtils {
         return (value >> position) % 2 == 1;
     }
 
+    public static int bitOnPosition(int number, int position) {
+        return (number >> (position - 1)) & 1;
+    }
+
+
     public static int xor(List<Integer> indexes) {
         if (indexes.isEmpty()) return 0;
         int xor = indexes.get(0);

@@ -21,7 +21,7 @@ public class SigmaTest {
                         1, 0, 1, 1,
                         0, 0, 0, 0,
                         0, 0,});
-        errors = new int[]{1,3,5,7};
+        errors = new int[]{2, 4, 6, 12};
     }
 
     @Test
@@ -35,7 +35,7 @@ public class SigmaTest {
 
         System.out.println(Formatter.toString(message, correctSum, badMessage, badSum, delta, errors));
 
-        SigmaCorrector.solve(delta);
+        SigmaCorrector.solve(badMessage, correctSum, delta);
 
     }
 }

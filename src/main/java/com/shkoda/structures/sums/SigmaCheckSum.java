@@ -18,7 +18,7 @@ import static com.shkoda.utils.MathUtils.xor;
  */
 public class SigmaCheckSum extends AbstractCheckSum<SigmaCheckSum> {
     public int sigma0, sigma1;
-public List<Integer> oneBitOnPositionXor = new ArrayList<>();
+    public List<Integer> oneBitOnPositionXor = new ArrayList<>();
 
     public SigmaCheckSum(boolean[] message) {
         super(message);
@@ -27,7 +27,7 @@ public List<Integer> oneBitOnPositionXor = new ArrayList<>();
 
         for (int i = 0; i < bitNumber; i++) {
             int xor = xor(filterOneBitIndexesWithOneOnPosition(message, i));
-            this.oneBitOnPositionXor.add( xor);
+            this.oneBitOnPositionXor.add(xor);
         }
 
 //        List<Integer> allIndexes = allIndexes(message);
@@ -49,6 +49,15 @@ public List<Integer> oneBitOnPositionXor = new ArrayList<>();
                 .collect(Collectors.toList()));
     }
 
+    public static boolean equals(SigmaCheckSum first, SigmaCheckSum second){
+        if (first.oneBitIndexesXor != second.oneBitIndexesXor) return false;
+        for (int i = 0; i < first.oneBitOnPositionXor.size(); i++) {
+            if (first.oneBitOnPositionXor.get(i).intValue() != second.oneBitOnPositionXor.get(i).intValue() )
+                return false;
+        }
+        return true;
+    }
+
     private SigmaCheckSum() {
         super();
     }
@@ -61,7 +70,7 @@ public List<Integer> oneBitOnPositionXor = new ArrayList<>();
         delta.sigma1 = this.sigma1 ^ other.sigma1;
         int size = this.oneBitOnPositionXor.size();
         for (int i = 0; i < size; i++) {
-            delta.oneBitOnPositionXor.add(this.oneBitOnPositionXor.get(i)^ other.oneBitOnPositionXor.get(i));
+            delta.oneBitOnPositionXor.add(this.oneBitOnPositionXor.get(i) ^ other.oneBitOnPositionXor.get(i));
         }
         return delta;
     }

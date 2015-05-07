@@ -2,8 +2,11 @@ package com.shkoda.corrector;
 
 import com.shkoda.structures.results.QuadraResult;
 import com.shkoda.structures.results.TripleResult;
+import com.shkoda.structures.sums.CheckSum;
 import com.shkoda.structures.sums.SigmaCheckSum;
+import com.shkoda.utils.MathUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -11,7 +14,7 @@ import java.util.stream.Collectors;
  * Created by Nightingale on 07.05.2015.
  */
 public class SigmaCorrector {
-    public static QuadraResult solve(SigmaCheckSum delta) {
+    public static QuadraResult solve(boolean[] receivedMessage, SigmaCheckSum correctSum, SigmaCheckSum delta) {
         QuadraResult result1, result2;
         int deltaLambda;
         //1.	Перевіряємо значення контрольної суми Δ0.
@@ -22,7 +25,7 @@ public class SigmaCorrector {
                     .filter(deltaK -> deltaK != 0)
                     .findFirst()
                     .get();
-
+            System.out.println(String.format("delta Lambda = %d\n", deltaLambda));
             //     2.2.	Знаходимо пару розв’язків (порядок A, B, C, D не важливий):
             /*  a)	Припускаємо, що Δλ = A. Маємо один розв’язок A = Δλ.
                 Змініюємо j-ті контрольні суми Δj = Δj + A, якщо aj = 1.
@@ -30,12 +33,23 @@ public class SigmaCorrector {
                 */
             result1 = solve(delta, deltaLambda);
 
+            System.out.println(result1.getLog() + "\n");
+            System.out.println(result1);
+
+            System.out.println();
+
+            if (isValid(receivedMessage, correctSum, result1))
+                return result1;
+
             /* b)	Припускаємо, що Δλ = B + C + D.
                     Маємо один розв’язок A = Δ0 + Δλ.
                     Аналогічно до п. 2.2a змінюємо
                     контрольні суми й шукаємо 3-кратну помилку.
              */
             result2 = solve(delta, deltaLambda ^ delta.oneBitIndexesXor);
+            System.out.println(result2.getLog() + "\n");
+            System.out.println(result2);
+
         } else {
             //3.	Якщо Δ0 = 0, то присутні лише пусті (повні) й нульові контрольні суми.
             /*
@@ -68,22 +82,46 @@ public class SigmaCorrector {
             } else {
                 deltaLambda = delta.sigma1;
             }
-
+            System.out.println(String.format("delta Lambda = %d\n", deltaLambda));
             result1 = solve(delta, deltaLambda);
+
+            System.out.println(result1.getLog() + "\n");
+            System.out.println(result1);
+
+            System.out.println();
+
+            if (isValid(receivedMessage, correctSum, result1))
+                return result1;
+
             result2 = solve(delta, deltaLambda ^ delta.oneBitIndexesXor);
+            System.out.println(result2.getLog() + "\n");
+            System.out.println(result2);
+
         }
 
-        System.out.println(String.format("delta Lambda = %d\n", deltaLambda));
-
-        System.out.println(result1.getLog()+"\n");
-        System.out.println(result1);
-//        System.out.println(result2);
 
         return null;
     }
 
+
+    private static boolean isValid(boolean[] receivedMessage, SigmaCheckSum correctSum, QuadraResult result) {
+        boolean[] fixedMessage = result.generateFixedMessage(receivedMessage);
+        SigmaCheckSum sum = new SigmaCheckSum(fixedMessage);
+        return SigmaCheckSum.equals(correctSum, sum) ;
+
+    }
+
+
     private static QuadraResult solve(SigmaCheckSum delta, int potentialRoot) {
-        List<Integer> modifiedDelta = xorWithValue(delta.oneBitOnPositionXor, potentialRoot);
+        List<Integer> modifiedDelta = new ArrayList<>(delta.oneBitOnPositionXor);
+
+        for (int i = 0; i < modifiedDelta.size(); i++) {
+            int current = modifiedDelta.get(i);
+            if (MathUtils.bitOnPosition(potentialRoot, i + 1) == 1)
+                modifiedDelta.set(i, current ^ potentialRoot);
+        }
+
+//        List<Integer> modifiedDelta = xorWithValue(delta.oneBitOnPositionXor, potentialRoot);
         modifiedDelta.add(0, delta.oneBitIndexesXor ^ potentialRoot);
 
         TripleResult tripleResult = TripleErrorCorrector.solve(modifiedDelta);

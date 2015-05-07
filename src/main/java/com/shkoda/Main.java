@@ -16,7 +16,7 @@ public class Main {
                     1, 1, 1, 1,
                     0, 0, 0, 0,
                     0, 0,});
-    private static final int[] errors = {1,3,5,7};
+    private static final int[] errors = {1,4,5,7};
 
     public static void main(String[] args) {
         boolean[] badMessage = MessageGenerator.invertBits(message, errors);

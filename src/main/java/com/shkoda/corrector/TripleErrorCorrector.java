@@ -1,12 +1,14 @@
 package com.shkoda.corrector;
 
 import com.shkoda.structures.results.TripleResult;
+import com.shkoda.structures.sums.CheckSum;
 import com.shkoda.utils.Formatter;
 
 import java.util.Arrays;
 import java.util.List;
 
 import static java.lang.String.format;
+import static com.shkoda.utils.MathUtils.*;
 
 /**
  * C0reated by Nightingale on 16.04.2015.
@@ -53,6 +55,7 @@ Found bad positions :: [3, 1, 0]
 
         //3 Якщо j-тий розряд delta[j] дорівнює одиниці,
         // то має місце друга ситуація і виконується перехід на п.8 алгоритму.
+//        if (bitOnPosition(delta[j], j) != 1) {
         if (bitOnPosition(delta[j], j) != 1) {
             sb.append(format("3. bit in %s on position %d == 0\n",
                     Formatter.toBinaryString(delta[j], bitNumber),
@@ -163,9 +166,7 @@ Found bad positions :: [3, 1, 0]
         return new TripleResult(low, middle, high, sb.toString());
     }
 
-    private static int bitOnPosition(int number, int position) {
-        return (number >> (position - 1)) & 1;
-    }
+
 
 
     public static TripleResult solve(List<Integer> deltaList) {

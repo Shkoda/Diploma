@@ -15,17 +15,17 @@ import static com.shkoda.utils.Formatter.logError;
 public class Start {
     public static void main(String[] args) {
         //{0,1,1,0,1,1,0}
-//        boolean[] message = MessageGenerator.generateMessage(new int[]{
-//                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0});
-        boolean[] message = MessageGenerator.generateMessage(16);
-        List<Integer> correctSum = CheckSumCounter.countWithThird(message);
+        boolean[] message = MessageGenerator.generateMessage(new int[]{
+                0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0});
+//        boolean[] message = MessageGenerator.generateMessage(16);
+        List<Integer> correctSum = CheckSumCounter.count(message);
 
 //        int[] errors = new int[]{4,6,12,14};
-        int[] errors = new int[]{9,11,13,15};
+        int[] errors = new int[]{2, 6, 12};
 
         boolean[] badMessage = MessageGenerator.invertBits(message, errors);
 
-        List<Integer> badSum = CheckSumCounter.countWithThird(badMessage);
+        List<Integer> badSum = CheckSumCounter.count(badMessage);
 
         List<Integer> delta = MathUtils.xor(correctSum, badSum);
         boolean[] fixed = null;
