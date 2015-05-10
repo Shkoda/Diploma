@@ -87,12 +87,26 @@ public class SigmaCorrector {
         for (int i = 0; i <= delta.oneBitOnPositionXor.size(); i++) {
             int deltaK = delta.oneBitOnPositionXor.get(i);
             if (isZeroControlSum(deltaK, i, delta.oneBitIndexesXor)) {
+
                 if (deltaA == -1) {
                     deltaA = deltaK;
-                } else {
-                    deltaB = deltaK;
-                    break;
+                    continue;
                 }
+
+                if (deltaA == deltaK){
+                    continue;
+                }
+
+                deltaB = deltaK;
+                break;
+
+//                if (deltaA == -1) {
+//                    deltaA = deltaK;
+//                } else {
+//
+//                    deltaB = deltaK;
+//                    break;
+//                }
             }
         }
 
@@ -110,14 +124,14 @@ public class SigmaCorrector {
                 Шукаємо розв’язок аналогічно до пп. 2.2-2.3.
             */
 
-        int sigma0 = delta.sigma0;
+        int sigma0 = delta.sigma3_0;
         if (sigma0 != delta.oneBitIndexesXor
                 && sigma0 != deltaA
                 && sigma0 != deltaB
                 && sigma0 != deltaGamma) {
             deltaLambda = sigma0;
         } else {
-            deltaLambda = delta.sigma1;
+            deltaLambda = delta.sigma3_1;
         }
         print(String.format("delta Lambda = %d\n", deltaLambda));
         result1 = solve(delta, deltaLambda);
@@ -133,7 +147,8 @@ public class SigmaCorrector {
         if (isValid(receivedMessage, correctSum, result1))
             return result1;
 
-        int potentialRoot = deltaLambda ^ delta.oneBitIndexesXor;
+//        int potentialRoot = deltaLambda ^ delta.oneBitIndexesXor;
+        int potentialRoot = deltaLambda ^ deltaGamma;
         print(String.format("potentialRoot= %d\n", potentialRoot));
         result2 = solve(delta, potentialRoot);
 

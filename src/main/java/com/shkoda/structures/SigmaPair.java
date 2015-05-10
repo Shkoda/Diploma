@@ -6,20 +6,48 @@ import static com.shkoda.utils.Formatter.toBinaryString;
  * Created by Nightingale on 07.05.2015.
  */
 public class SigmaPair {
-    public final int sigma0, sigma1, value;
+    public final int sigma3_0;
+    public final int sigma3_1;
+
+    public final int sigma4_0;
+    public final int sigma4_1;
+
+    public final int sigma5_0;
+    public final int sigma5_1;
+    public final int sigma5_2;
+
+
+    public final int value;
 
     public SigmaPair(int value) {
         this.value = value;
         int bitNumber = Integer.bitCount(value);
-        sigma0 = (bitNumber % 3) % 2;
-        sigma1 = (bitNumber % 3) >> 1;
+
+        sigma3_0 = (bitNumber % 3) % 2;
+        sigma3_1 = (bitNumber % 3) >> 1;
+
+        sigma4_0 = (bitNumber % 4) % 2;
+        sigma4_1 = (bitNumber % 4) >> 1;
+
+        sigma5_0 = (bitNumber % 5) % 2;
+        sigma5_1 = ((bitNumber % 5) >> 1) & 1;
+        sigma5_2 = (bitNumber % 5) >> 2;
     }
 
     @Override
     public String toString() {
-        return String.format("{s1=%d s0=%d | %d (%s)}",
-                sigma1,
-                sigma0,
+        return String.format("{s3_1=%d s3_0=%d : s4_1=%d s4_0=%d :  s5_2=%d s5_1=%d s5_0=%d :  | %d (%s)}",
+                sigma3_1,
+                sigma3_0,
+
+                sigma4_1,
+                sigma4_0,
+
+                sigma5_2,
+                sigma5_1,
+                sigma5_0,
+
+
                 value,
                 toBinaryString(value));
     }
@@ -29,6 +57,6 @@ public class SigmaPair {
     }
 //    @Override
 //    public String toString() {
-//        return String.format("%d %d %d", sigma0, sigma1, value);
+//        return String.format("%d %d %d", sigma3_0, sigma3_1, value);
 //    }
 }
