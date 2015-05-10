@@ -1,14 +1,11 @@
 package com.shkoda.structures.sums;
 
-import com.shkoda.structures.PositionPair;
 import com.shkoda.structures.SigmaPair;
-import com.shkoda.sum.CheckSumCounter;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.shkoda.sum.CheckSumCounter.allIndexes;
 import static com.shkoda.sum.CheckSumCounter.filterAllOneBitIndexes;
 import static com.shkoda.sum.CheckSumCounter.filterOneBitIndexesWithOneOnPosition;
 import static com.shkoda.utils.MathUtils.xor;

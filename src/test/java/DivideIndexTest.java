@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.shkoda.generator.MessageGenerator.generateMessage;
-
 /**
  * Created by Nightingale on 06.05.2015.
  */

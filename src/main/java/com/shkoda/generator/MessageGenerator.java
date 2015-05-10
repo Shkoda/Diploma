@@ -9,8 +9,6 @@ import java.util.List;
  * Created by Nightingale on 10.04.2015.
  */
 public class MessageGenerator {
-
-
     public static boolean[] generateMessage(int[] prototype) {
         boolean[] message = new boolean[prototype.length];
         for (int i = 0; i < prototype.length; i++) {

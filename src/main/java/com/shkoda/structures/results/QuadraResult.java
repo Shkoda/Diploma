@@ -1,8 +1,6 @@
 package com.shkoda.structures.results;
 
 import com.shkoda.generator.MessageGenerator;
-import com.shkoda.sum.CheckSumCounter;
-import com.shkoda.utils.MathUtils;
 
 import java.util.Arrays;
 

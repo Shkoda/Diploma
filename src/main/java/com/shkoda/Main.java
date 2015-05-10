@@ -2,7 +2,6 @@ package com.shkoda;
 
 import com.shkoda.generator.MessageGenerator;
 import com.shkoda.structures.sums.AbstractCheckSum;
-import com.shkoda.structures.sums.CheckSum;
 import com.shkoda.structures.sums.SigmaCheckSum;
 import com.shkoda.utils.Formatter;
 

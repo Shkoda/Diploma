@@ -8,7 +8,7 @@ import java.util.List;
 
 import static com.shkoda.generator.MessageGenerator.*;
 import static com.shkoda.sum.CheckSumCounter.count;
-import static com.shkoda.utils.Formatter.*;
+import static com.shkoda.utils.Formatter.logError;
 
 /**
  * Created by Nightingale on 16.04.2015.

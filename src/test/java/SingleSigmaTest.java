@@ -1,6 +1,5 @@
 import com.shkoda.corrector.SigmaCorrector;
 import com.shkoda.generator.MessageGenerator;
-import com.shkoda.structures.sums.AbstractCheckSum;
 import com.shkoda.structures.sums.SigmaCheckSum;
 import com.shkoda.utils.Formatter;
 import org.junit.Before;
@@ -20,7 +19,7 @@ public class SingleSigmaTest {
                         0, 0, 0, 0,
                         0, 0, 0, 0,
                         0, 0, 0, 0});
-        errors = new int[]{1, 4, 5, 14};
+        errors = new int[]{1, 2, 5, 6};
     }
 
     @Test

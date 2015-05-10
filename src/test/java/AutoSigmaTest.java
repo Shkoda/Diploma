@@ -1,14 +1,15 @@
 import com.shkoda.corrector.SigmaCorrector;
+import com.shkoda.generator.IndexGenerator;
 import com.shkoda.generator.MessageGenerator;
 import com.shkoda.structures.results.QuadraResult;
 import com.shkoda.structures.sums.SigmaCheckSum;
 import com.shkoda.utils.Formatter;
-import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static com.shkoda.generator.MessageGenerator.generateZeroMessage;
-import static com.shkoda.generator.MessageGenerator.hasNext;
-import static com.shkoda.generator.MessageGenerator.next;
 
 /**
  * Created by Nightingale on 07.05.2015.
@@ -16,18 +17,20 @@ import static com.shkoda.generator.MessageGenerator.next;
 public class AutoSigmaTest {
     @Test
     public void test() throws Exception {
-        boolean ok = true;
-        for (int length = 16; ok && length < 64 ; length++) {
-            boolean[] message = generateZeroMessage(length);
-            int[] errors = MessageGenerator.generateSortedDifferentNumbers(length, 4);
 
-            while (ok = solve(message, errors)) {
-                if (hasNext(message))
-                    message = next(message);
-                else break;
+        for (int length = 16; length < 32; length++) {
+            boolean[] message = generateZeroMessage(length);
+
+            List<int[]> errorList = IndexGenerator.generateAllQuadraErrors(length);
+
+            for (int[] errors : errorList) {
+                if (solve(message, errors)) {
+                    System.out.println("Solved for " + Arrays.toString(errors));
+                } else {
+                    return;
+                }
             }
         }
-
     }
 
     private boolean solve(boolean[] message, int[] errors) {
@@ -38,7 +41,7 @@ public class AutoSigmaTest {
 
         SigmaCheckSum delta = correctSum.delta(badSum);
 
-        System.out.println(Formatter.toString(message, correctSum, badMessage, badSum, delta, errors));
+//        System.out.println(Formatter.toString(message, correctSum, badMessage, badSum, delta, errors));
 
         QuadraResult solution = SigmaCorrector.solve(badMessage, correctSum, delta);
 

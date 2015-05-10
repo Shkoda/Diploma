@@ -8,9 +8,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
-import static com.shkoda.generator.MessageGenerator.*;
+import static com.shkoda.generator.MessageGenerator.generateMessage;
+import static com.shkoda.generator.MessageGenerator.invertBits;
 import static com.shkoda.sum.CheckSumCounter.countWithThird;
-import static com.shkoda.utils.Formatter.logError;
 
 /**
  * Created by Nightingale on 05.05.2015.

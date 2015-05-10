@@ -1,7 +1,5 @@
 package com.shkoda.structures;
 
-import com.shkoda.utils.Formatter;
-
 import static com.shkoda.utils.Formatter.toBinaryString;
 
 /**

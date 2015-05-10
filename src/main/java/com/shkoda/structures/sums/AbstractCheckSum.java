@@ -1,10 +1,5 @@
 package com.shkoda.structures.sums;
 
-import com.shkoda.structures.PositionPair;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import static com.shkoda.utils.MathUtils.bitNumber;
 
 /**

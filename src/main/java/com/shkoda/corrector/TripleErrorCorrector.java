@@ -1,14 +1,13 @@
 package com.shkoda.corrector;
 
 import com.shkoda.structures.results.TripleResult;
-import com.shkoda.structures.sums.CheckSum;
 import com.shkoda.utils.Formatter;
 
 import java.util.Arrays;
 import java.util.List;
 
+import static com.shkoda.utils.MathUtils.bitOnPosition;
 import static java.lang.String.format;
-import static com.shkoda.utils.MathUtils.*;
 
 /**
  * C0reated by Nightingale on 16.04.2015.
