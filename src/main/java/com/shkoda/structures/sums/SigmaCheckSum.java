@@ -53,6 +53,7 @@ public class SigmaCheckSum extends AbstractCheckSum<SigmaCheckSum> {
                 return false;
         }
         return true;
+        
     }
 
     private SigmaCheckSum() {
