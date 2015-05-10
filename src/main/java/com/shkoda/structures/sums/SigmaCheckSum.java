@@ -1,6 +1,7 @@
 package com.shkoda.structures.sums;
 
 import com.shkoda.structures.SigmaPair;
+import com.shkoda.utils.GaluaMath;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +16,7 @@ import static com.shkoda.utils.MathUtils.xor;
  */
 public class SigmaCheckSum extends AbstractCheckSum<SigmaCheckSum> {
     public int sigma0, sigma1;
+    public int mod3, multMod3, count3;
     public List<Integer> oneBitOnPositionXor = new ArrayList<>();
 
     public SigmaCheckSum(boolean[] message) {
@@ -44,16 +46,25 @@ public class SigmaCheckSum extends AbstractCheckSum<SigmaCheckSum> {
                 .filter(sigma -> sigma.sigma1 != 0)
                 .map(sigma -> sigma.value)
                 .collect(Collectors.toList()));
+
+        List<Integer> zeroMod3 = oneBitIndexes.stream()
+                .filter(i -> i % 3 == 0)
+                .collect(Collectors.toList());
+
+        this.count3 = zeroMod3.size();
+        this.mod3 = xor(zeroMod3);
+        this.multMod3 = GaluaMath.multipleArrayInField(zeroMod3, 299);
+
     }
 
-    public static boolean equals(SigmaCheckSum first, SigmaCheckSum second){
+    public static boolean equals(SigmaCheckSum first, SigmaCheckSum second) {
         if (first.oneBitIndexesXor != second.oneBitIndexesXor) return false;
         for (int i = 0; i < first.oneBitOnPositionXor.size(); i++) {
-            if (first.oneBitOnPositionXor.get(i).intValue() != second.oneBitOnPositionXor.get(i).intValue() )
+            if (first.oneBitOnPositionXor.get(i).intValue() != second.oneBitOnPositionXor.get(i).intValue())
                 return false;
         }
         return true;
-        
+
     }
 
     private SigmaCheckSum() {
@@ -66,6 +77,12 @@ public class SigmaCheckSum extends AbstractCheckSum<SigmaCheckSum> {
         delta.oneBitIndexesXor = this.oneBitIndexesXor ^ other.oneBitIndexesXor;
         delta.sigma0 = this.sigma0 ^ other.sigma0;
         delta.sigma1 = this.sigma1 ^ other.sigma1;
+
+
+        delta.mod3 = this.mod3 ^ other.mod3;
+        delta.multMod3 = this.multMod3 ^ other.multMod3;
+        delta.count3 = other.count3 - this.count3;
+
         int size = this.oneBitOnPositionXor.size();
         for (int i = 0; i < size; i++) {
             delta.oneBitOnPositionXor.add(this.oneBitOnPositionXor.get(i) ^ other.oneBitOnPositionXor.get(i));
@@ -79,7 +96,11 @@ public class SigmaCheckSum extends AbstractCheckSum<SigmaCheckSum> {
         sb.append("{").append(oneBitIndexesXor).append(" | ")
                 .append(sigma0)
                 .append(" ").append(sigma1)
-                .append(" | ");
+                .append(" | ")
+
+                .append(count3)
+                .append(" ").append(mod3) .append(" ").append(multMod3)
+                .append(" | ");;
 
         oneBitOnPositionXor.forEach(i -> sb.append(String.format("%d ", i)));
         sb.append("}");
