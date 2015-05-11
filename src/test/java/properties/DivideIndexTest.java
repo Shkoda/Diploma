@@ -1,3 +1,5 @@
+package properties;
+
 import com.shkoda.generator.IndexGenerator;
 import com.shkoda.structures.Indexes;
 import org.junit.Test;

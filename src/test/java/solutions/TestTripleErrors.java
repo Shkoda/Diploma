@@ -1,3 +1,5 @@
+package solutions;
+
 import com.shkoda.corrector.TripleErrorCorrector;
 import com.shkoda.generator.MessageGenerator;
 import com.shkoda.utils.MathUtils;

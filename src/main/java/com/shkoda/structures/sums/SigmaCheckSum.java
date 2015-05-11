@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 import static com.shkoda.sum.CheckSumCounter.filterAllOneBitIndexes;
 import static com.shkoda.sum.CheckSumCounter.filterOneBitIndexesWithOneOnPosition;
+import static com.shkoda.utils.MathUtils.hasOneBitOnPosition;
 import static com.shkoda.utils.MathUtils.xor;
 
 /**
@@ -18,6 +19,7 @@ public class SigmaCheckSum extends AbstractCheckSum<SigmaCheckSum> {
     public int sigma0, sigma1;
     public int mod3, multMod3, count3;
     public List<Integer> oneBitOnPositionXor = new ArrayList<>();
+    public List<Integer> triple = new ArrayList<>();
 
     public SigmaCheckSum(boolean[] message) {
         super(message);
@@ -55,6 +57,13 @@ public class SigmaCheckSum extends AbstractCheckSum<SigmaCheckSum> {
         this.mod3 = xor(zeroMod3);
         this.multMod3 = GaluaMath.multipleArrayInField(zeroMod3, 299);
 
+        for (int i = 0; i < bitNumber; i++) {
+            int pos = i ;
+            List<Integer> triBits = zeroMod3.stream().filter(z -> hasOneBitOnPosition(z, pos)).collect(Collectors.toList());
+            int xor = xor(triBits);
+            this.triple.add(xor);
+        }
+
     }
 
     public static boolean equals(SigmaCheckSum first, SigmaCheckSum second) {
@@ -67,7 +76,7 @@ public class SigmaCheckSum extends AbstractCheckSum<SigmaCheckSum> {
 
     }
 
-    private SigmaCheckSum() {
+    public SigmaCheckSum() {
         super();
     }
 
@@ -87,6 +96,10 @@ public class SigmaCheckSum extends AbstractCheckSum<SigmaCheckSum> {
         for (int i = 0; i < size; i++) {
             delta.oneBitOnPositionXor.add(this.oneBitOnPositionXor.get(i) ^ other.oneBitOnPositionXor.get(i));
         }
+
+        for (int i = 0; i < size; i++) {
+            delta.triple.add(this.triple.get(i) ^ other.triple.get(i));
+        }
         return delta;
     }
 
@@ -99,10 +112,13 @@ public class SigmaCheckSum extends AbstractCheckSum<SigmaCheckSum> {
                 .append(" | ")
 
                 .append(count3)
-                .append(" ").append(mod3) .append(" ").append(multMod3)
-                .append(" | ");;
+                .append(" ").append(mod3).append(" ").append(multMod3)
+                .append(" | ");
+        ;
 
         oneBitOnPositionXor.forEach(i -> sb.append(String.format("%d ", i)));
+        sb.append(" || ");
+        triple.forEach(i -> sb.append(String.format("%d ", i)));
         sb.append("}");
         return sb.toString();
     }

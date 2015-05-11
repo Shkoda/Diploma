@@ -1,3 +1,5 @@
+package properties;
+
 import com.shkoda.corrector.SigmaCorrector;
 import com.shkoda.generator.IndexGenerator;
 import com.shkoda.generator.MessageGenerator;

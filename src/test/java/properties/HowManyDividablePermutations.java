@@ -1,10 +1,9 @@
+package properties;
+
 import com.shkoda.generator.IndexGenerator;
 import com.shkoda.generator.MessageGenerator;
-import com.shkoda.structures.sums.CheckSum;
-import com.shkoda.utils.MathUtils;
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,6 +22,8 @@ public class HowManyDividablePermutations {
                 .filter(HowManyDividablePermutations::sumZero)
                 .filter(HowManyDividablePermutations::allDividableByThree)
                 .collect(Collectors.toList());
+
+        zero.forEach(z-> System.out.println(Arrays.toString(z)));
 
         for (int i = 0; i < zero.size()-1; i++) {
             int[] first = zero.get(i);
