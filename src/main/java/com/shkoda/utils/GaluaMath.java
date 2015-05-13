@@ -7,7 +7,7 @@ public class GaluaMath {
     public static void main(String[] args) {
         // [3, 5, 10, 12]
         //228
-        int a = multiple(9, 144);
+        int a = multiple(3, 6);
 //        int b = modulo(5,5);
         System.out.println(a);
 

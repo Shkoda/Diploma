@@ -10,12 +10,12 @@ import com.shkoda.utils.Formatter;
  */
 public class Main {
     private static final boolean[] message = MessageGenerator.generateMessage(
-            new int[]{1, 1, 0, 1,
+            new int[]{0, 0, 0, 0,
                     0, 0, 0, 0,
-                    1, 1, 1, 1,
+                    0, 0, 0, 0,
                     0, 0, 0, 0,
                     0, 0,});
-    private static final int[] errors = {1,4,5,7};
+    private static final int[] errors = {3, 6, 9, 12};
 
     public static void main(String[] args) {
         boolean[] badMessage = MessageGenerator.invertBits(message, errors);
@@ -27,8 +27,6 @@ public class Main {
 
         System.out.println(Formatter.toString(message, correctSum, badMessage, badSum, delta, errors));
     }
-
-
 
 
 }

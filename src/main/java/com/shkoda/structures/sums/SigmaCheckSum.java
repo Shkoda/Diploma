@@ -19,7 +19,8 @@ public class SigmaCheckSum extends AbstractCheckSum<SigmaCheckSum> {
     public int sigma0, sigma1;
     public int mod3, multMod3, count3;
     public List<Integer> oneBitOnPositionXor = new ArrayList<>();
-    public List<Integer> triple = new ArrayList<>();
+    public List<Integer> multOneBitOnPositionXor = new ArrayList<>();
+    public List<Integer> tripleMult = new ArrayList<>();
 
     public SigmaCheckSum(boolean[] message) {
         super(message);
@@ -27,8 +28,10 @@ public class SigmaCheckSum extends AbstractCheckSum<SigmaCheckSum> {
         oneBitIndexesXor = xor(oneBitIndexes);
 
         for (int i = 0; i < bitNumber; i++) {
-            int xor = xor(filterOneBitIndexesWithOneOnPosition(message, i));
+            List<Integer> indexes = filterOneBitIndexesWithOneOnPosition(message, i);
+            int xor = xor(indexes);
             this.oneBitOnPositionXor.add(xor);
+            this.multOneBitOnPositionXor.add(GaluaMath.multipleArrayInField(indexes, 299));
         }
 
 //        List<Integer> allIndexes = allIndexes(message);
@@ -60,8 +63,7 @@ public class SigmaCheckSum extends AbstractCheckSum<SigmaCheckSum> {
         for (int i = 0; i < bitNumber; i++) {
             int pos = i ;
             List<Integer> triBits = zeroMod3.stream().filter(z -> hasOneBitOnPosition(z, pos)).collect(Collectors.toList());
-            int xor = xor(triBits);
-            this.triple.add(xor);
+            this.tripleMult.add(GaluaMath.multipleArrayInField(triBits, 299));
         }
 
     }
@@ -95,10 +97,11 @@ public class SigmaCheckSum extends AbstractCheckSum<SigmaCheckSum> {
         int size = this.oneBitOnPositionXor.size();
         for (int i = 0; i < size; i++) {
             delta.oneBitOnPositionXor.add(this.oneBitOnPositionXor.get(i) ^ other.oneBitOnPositionXor.get(i));
+            delta.multOneBitOnPositionXor.add(this.multOneBitOnPositionXor.get(i) ^ other.multOneBitOnPositionXor.get(i));
         }
 
         for (int i = 0; i < size; i++) {
-            delta.triple.add(this.triple.get(i) ^ other.triple.get(i));
+            delta.tripleMult.add(this.tripleMult.get(i) ^ other.tripleMult.get(i));
         }
         return delta;
     }
@@ -111,14 +114,14 @@ public class SigmaCheckSum extends AbstractCheckSum<SigmaCheckSum> {
                 .append(" ").append(sigma1)
                 .append(" | ")
 
-                .append(count3)
-                .append(" ").append(mod3).append(" ").append(multMod3)
-                .append(" | ");
+//                .append(count3)
+//                .append(" ").append(mod3).append(" ").append(multMod3)
+//                .append(" | ");
         ;
 
         oneBitOnPositionXor.forEach(i -> sb.append(String.format("%d ", i)));
         sb.append(" || ");
-        triple.forEach(i -> sb.append(String.format("%d ", i)));
+        multOneBitOnPositionXor.forEach(i -> sb.append(String.format("%d ", i)));
         sb.append("}");
         return sb.toString();
     }
