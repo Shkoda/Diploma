@@ -14,6 +14,7 @@ import static com.shkoda.utils.MathUtils.xor;
 /**
  * Created by Nightingale on 06.05.2015.
  */
+@Deprecated
 public class ShiftedCheckSum extends AbstractCheckSum<ShiftedCheckSum> {
     public List<PositionPair> oneBitOnPositionXor = new ArrayList<>();
     private ShiftedCheckSum() {

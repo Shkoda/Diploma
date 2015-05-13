@@ -3,6 +3,7 @@ package com.shkoda.structures;
 /**
  * Created by Nightingale on 06.05.2015.
  */
+@Deprecated
 public class PositionPair {
     public final int position, value;
 
