@@ -1,4 +1,4 @@
-package solutions;
+package solutions.triple;
 
 import com.shkoda.corrector.TripleErrorCorrector;
 import com.shkoda.generator.MessageGenerator;

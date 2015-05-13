@@ -1,4 +1,4 @@
-package solutions;
+package solutions.squared;
 
 import com.shkoda.corrector.SigmaCorrector;
 import com.shkoda.generator.IndexGenerator;
@@ -16,7 +16,7 @@ import static com.shkoda.generator.MessageGenerator.generateZeroMessage;
 /**
  * Created by Nightingale on 07.05.2015.
  */
-public class AutoSigmaTest {
+public class AutoSquaredSumTest {
     @Test
     public void test() throws Exception {
 

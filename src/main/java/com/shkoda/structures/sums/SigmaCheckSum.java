@@ -1,5 +1,6 @@
 package com.shkoda.structures.sums;
 
+import com.shkoda.Config;
 import com.shkoda.structures.SigmaPair;
 import com.shkoda.utils.GaluaMath;
 
@@ -31,7 +32,7 @@ public class SigmaCheckSum extends AbstractCheckSum<SigmaCheckSum> {
             List<Integer> indexes = filterOneBitIndexesWithOneOnPosition(message, i);
             int xor = xor(indexes);
             this.oneBitOnPositionXor.add(xor);
-            this.multOneBitOnPositionXor.add(GaluaMath.multipleArrayInField(indexes, 299));
+            this.multOneBitOnPositionXor.add(GaluaMath.multipleArrayInField(indexes, Config.POLYNOMIAL_MAP.get(bitNumber)));
         }
 
 //        List<Integer> allIndexes = allIndexes(message);
@@ -58,12 +59,12 @@ public class SigmaCheckSum extends AbstractCheckSum<SigmaCheckSum> {
 
         this.count3 = zeroMod3.size();
         this.mod3 = xor(zeroMod3);
-        this.multMod3 = GaluaMath.multipleArrayInField(zeroMod3, 299);
+        this.multMod3 = GaluaMath.multipleArrayInField(zeroMod3,  Config.POLYNOMIAL_MAP.get(bitNumber));
 
         for (int i = 0; i < bitNumber; i++) {
             int pos = i ;
             List<Integer> triBits = zeroMod3.stream().filter(z -> hasOneBitOnPosition(z, pos)).collect(Collectors.toList());
-            this.tripleMult.add(GaluaMath.multipleArrayInField(triBits, 299));
+            this.tripleMult.add(GaluaMath.multipleArrayInField(triBits,  Config.POLYNOMIAL_MAP.get(bitNumber)));
         }
 
     }

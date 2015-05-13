@@ -35,7 +35,7 @@
 //                boolean[] fixed = null;
 //                try {
 //
-//                    fixed = DoubleErrorCorrector.fix(badMessage, sum);
+//                    fixed = DoubleErrorCorrector.solve(badMessage, sum);
 //
 //                } catch (Exception e) {
 //                    logError(message, badMessage, fixed, badSum, sum, delta, first, second);

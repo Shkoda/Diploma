@@ -6,7 +6,7 @@ import static com.shkoda.utils.MathUtils.bitNumber;
  * Created by Nightingale on 07.05.2015.
  */
 public abstract class AbstractCheckSum<T extends AbstractCheckSum> {
-    protected int bitNumber;
+    public int bitNumber;
     public int oneBitIndexesXor;
 
 
