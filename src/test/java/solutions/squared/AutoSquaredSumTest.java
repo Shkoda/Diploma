@@ -1,10 +1,12 @@
 package solutions.squared;
 
 import com.shkoda.corrector.SigmaCorrector;
+import com.shkoda.corrector.SquaredSumCorrector;
 import com.shkoda.generator.IndexGenerator;
 import com.shkoda.generator.MessageGenerator;
 import com.shkoda.structures.results.QuadraResult;
 import com.shkoda.structures.sums.SigmaCheckSum;
+import com.shkoda.structures.sums.SquaredCheckSum;
 import com.shkoda.utils.Formatter;
 import org.junit.Test;
 
@@ -38,20 +40,28 @@ public class AutoSquaredSumTest {
     private boolean solve(boolean[] message, int[] errors) {
         boolean[] badMessage = MessageGenerator.invertBits(message, errors);
 
-        SigmaCheckSum correctSum = new SigmaCheckSum(message);
-        SigmaCheckSum badSum = new SigmaCheckSum(badMessage);
+        SquaredCheckSum correctSum = new SquaredCheckSum(message);
+        SquaredCheckSum badSum = new SquaredCheckSum(badMessage);
 
-        SigmaCheckSum delta = correctSum.delta(badSum);
+        SquaredCheckSum delta = correctSum.delta(badSum);
+
+        try {
 
 //        System.out.println(Formatter.toString(message, correctSum, badMessage, badSum, delta, errors));
 
-        QuadraResult solution = SigmaCorrector.solve(badMessage, correctSum, delta);
+            QuadraResult solution = SquaredSumCorrector.solve(badMessage, correctSum,badSum, delta);
 
-        if (solution == null) {
+            if (solution == null) {
+                System.err.println(Formatter.toString(message, correctSum, badMessage, badSum, delta, errors));
+                return false;
+            }
+            return true;
+        }catch (Exception e){
             System.err.println(Formatter.toString(message, correctSum, badMessage, badSum, delta, errors));
+            e.printStackTrace();
             return false;
         }
-        return true;
+
     }
 }
 

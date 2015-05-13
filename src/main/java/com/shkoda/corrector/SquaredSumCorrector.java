@@ -1,10 +1,12 @@
 package com.shkoda.corrector;
 
 import com.shkoda.corrector.equations.EquationSystemSolver;
+import com.shkoda.generator.MessageGenerator;
 import com.shkoda.structures.Pair;
 import com.shkoda.structures.results.QuadraResult;
 import com.shkoda.structures.results.TripleResult;
 import com.shkoda.structures.sums.SquaredCheckSum;
+import com.shkoda.sum.CheckSumCounter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,8 +46,15 @@ public class SquaredSumCorrector {
 
         Pair roots = EquationSystemSolver.solve(delta.bitNumber, xor, cmSen, cmRec, deltaEoS);
 
-        System.out.println(roots);
-        return null;
+        boolean[] modifiedMessage = MessageGenerator.invertBits(receivedMessage, roots.x, roots.y);
+
+        SquaredCheckSum modifiedSum = new SquaredCheckSum(modifiedMessage);
+
+        Pair otherErrors = DoubleErrorCorrector.errorPositions(correctSum.delta(modifiedSum));
+
+        QuadraResult result = new QuadraResult(roots.x, roots.y, otherErrors.x, otherErrors.y);
+        System.out.println(result);
+        return result;
 
     }
 

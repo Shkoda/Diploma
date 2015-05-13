@@ -23,7 +23,7 @@ public class SingleSquaredTest {
                         0, 0, 0, 0,
                         0, 0, 0, 0,
                         0, 0, 0, 0});
-        errors = new int[]{3, 6, 9, 12};
+        errors = new int[]{1, 2, 4, 6};
     }
 
     @Test
