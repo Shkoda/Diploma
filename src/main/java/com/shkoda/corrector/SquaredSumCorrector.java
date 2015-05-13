@@ -7,11 +7,13 @@ import com.shkoda.structures.results.QuadraResult;
 import com.shkoda.structures.results.TripleResult;
 import com.shkoda.structures.sums.SquaredCheckSum;
 import com.shkoda.sum.CheckSumCounter;
+import com.shkoda.utils.MathUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.shkoda.sum.CheckSumCounter.count;
 import static com.shkoda.utils.MathUtils.bitOnPosition;
 
 /**
@@ -19,7 +21,7 @@ import static com.shkoda.utils.MathUtils.bitOnPosition;
  */
 public class SquaredSumCorrector {
 
-    private static boolean outputEnabled = true;
+    private static boolean outputEnabled = false;
 
     public static QuadraResult solve(boolean[] receivedMessage, SquaredCheckSum correctSum, SquaredCheckSum receivedSum, SquaredCheckSum delta) {
         QuadraResult result1, result2;
@@ -53,7 +55,7 @@ public class SquaredSumCorrector {
         Pair otherErrors = DoubleErrorCorrector.errorPositions(correctSum.delta(modifiedSum));
 
         QuadraResult result = new QuadraResult(roots.x, roots.y, otherErrors.x, otherErrors.y);
-        System.out.println(result);
+
         return result;
 
     }
@@ -72,6 +74,25 @@ public class SquaredSumCorrector {
                 deltaLambda = deltaK;
                 break;
             }
+        }
+
+        if (deltaLambda == -1){
+            int A = -1;
+            //no one-control-sum
+            for (int i = 0; i < delta.oneBitOnPositionXor.size(); i++) {
+                int deltaK = delta.oneBitOnPositionXor.get(i);
+                if (deltaK==delta.oneBitIndexesXor) {
+                    A = deltaK;
+                    break;
+                }
+            }
+
+            boolean[] modifiedMessage = MessageGenerator.invertBits(receivedMessage, A);
+            List<Integer> badSum = count(modifiedMessage);
+            List<Integer> correct = count(correctSum);
+
+            TripleResult tripleResult = TripleErrorCorrector.solve(MathUtils.xor(correct, badSum));
+            return new QuadraResult(A, tripleResult.high, tripleResult.middle, tripleResult.low);
         }
 
         print(String.format("delta Lambda = %d\n", deltaLambda));

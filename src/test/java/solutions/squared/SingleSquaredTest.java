@@ -3,6 +3,7 @@ package solutions.squared;
 import com.shkoda.corrector.SigmaCorrector;
 import com.shkoda.corrector.SquaredSumCorrector;
 import com.shkoda.generator.MessageGenerator;
+import com.shkoda.structures.results.QuadraResult;
 import com.shkoda.structures.sums.SigmaCheckSum;
 import com.shkoda.structures.sums.SquaredCheckSum;
 import com.shkoda.utils.Formatter;
@@ -37,7 +38,8 @@ public class SingleSquaredTest {
 
         System.out.println(Formatter.toString(message, correctSum, badMessage, badSum, delta, errors));
 
-        SquaredSumCorrector.solve(badMessage, correctSum, badSum, delta);
+        QuadraResult result = SquaredSumCorrector.solve(badMessage, correctSum, badSum, delta);
+        System.out.println("Result :: "+result);
 
     }
 }

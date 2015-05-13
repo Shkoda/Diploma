@@ -1,5 +1,7 @@
 package com.shkoda.sum;
 
+import com.shkoda.structures.sums.SquaredCheckSum;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,6 +24,13 @@ public class CheckSumCounter {
             sums.add(xor(filterOneBitIndexesWithOneOnPosition(message, i)));
         }
 
+        return sums;
+    }
+
+    public static List<Integer> count(SquaredCheckSum sum) {
+        List<Integer> sums = new ArrayList<>();
+        sums.add(sum.oneBitIndexesXor);
+        sums.addAll(sum.oneBitOnPositionXor);
         return sums;
     }
 
